@@ -8,9 +8,10 @@ module.exports = {
      */
     app.post("/api/mapBox", async (req, res, next) => {
       let coordinates = req.body;
-      let coordinate_string = "";
-
       coordinates = JSON.parse(coordinates);
+      res.status(600).json({ response: coordinates });
+
+      let coordinate_string = "";
 
       // Get string list of coordinate for request
       coordinates.map((element) => {
