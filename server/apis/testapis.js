@@ -1,7 +1,5 @@
-const axios = require('axios').default;
 
 module.exports = {
-
 
   // APIs
   apis: function (app, admin) {
@@ -19,12 +17,9 @@ module.exports = {
     app.get("/api/carInfo", async (req, res, next) => 
     {
       var data;
-      axios.get('https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=2012&make=Honda&model=Fit', {headers: {
-        'Content-Type': 'application/xml'}
-    }).then((res)=>{data=res.data});
+      axios.get('https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=2012&make=Honda&model=Fit').then((res)=>{data=res.data});
       res.status(200).json({info: data});
     });
-
 
   },
 };
