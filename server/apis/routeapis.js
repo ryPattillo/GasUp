@@ -9,23 +9,16 @@ module.exports = {
     app.post("/api/mapBox", async (req, res, next) => {
       let coordinates = req.body;
       coordinates = JSON.parse(coordinates);
-      res.status(600).json({ response: coordinates });
-
-      let coordinate_string = "";
-
       // Get string list of coordinate for request
       coordinates.map((element) => {
         coordinate_string += element.lat + "," + element.long + ";";
       });
-
-      // Ensure that last ; is not in request
+      // Ensure that last is not in request
       coordinate_string = coordinate_string.substring(
         0,
         coordinate_string.length - 1
       );
-
-      console.log(coordinate_string);
-
+      
       try {
         const resp = await axios.get(
           `https://api.mapbox.com/matching/v5/mapbox/driving/${coordinate_string}?access_token=${process.env.mapbox_key}`,
