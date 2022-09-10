@@ -18,7 +18,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 const Separator = () => <View style={styles.separator} />;
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const { signup, login } = useAuth();
@@ -57,7 +57,7 @@ export default function LoginScreen() {
           />
         </HStack>
 
-        <Text style={styles.title}>Create a Account</Text>
+        <Text style={styles.title}>Log in to Gas Up</Text>
         <Input placeholder={"Email"} value={email} setValue={setEmail}></Input>
         <Input
           placeholder={"Password"}
@@ -75,9 +75,12 @@ export default function LoginScreen() {
 
         <Button
           variant="contained"
-          color="black"
+          color="#2F6424"
           style={styles.button}
           title="SIGN UP"
+          onPress={() => {
+            navigation.navigate("Register");
+          }}
         ></Button>
         <Separator />
         <Text style={styles.text}>Forgot your password? Click Here.</Text>
