@@ -3,6 +3,7 @@ import * as React from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions, StatusBar } from 'react-native';
 import HomeScreen from './components/screens/HomeScreen'
+import RegistrationScreen from './components/screens/registerScreen/registrationScreen';
 
 export default function App() {
   return (

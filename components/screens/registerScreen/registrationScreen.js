@@ -1,8 +1,9 @@
 
-import { View, Text, ScrollView , StyleSheet, TextInput, SafeAreaView, useWindowDimensions} from "react-native";
+import { View, Text, ScrollView , StyleSheet, TextInput, SafeAreaView, useWindowDimensions, Image} from "react-native";
 import React, {useState} from 'react';
 import Input from "../../Input";
 import { Button } from "@react-native-material/core";
+import { HStack } from "@react-native-material/core";
 
 const Separator = () => (
   <View style={styles.separator} />
@@ -16,11 +17,15 @@ export default function RegistrationScreen(){
   return(
 
     <View style={styles.root}>
-      <View style={{flexDirection:"row"}}>
-        <Text style={styles.title}>GasUp</Text>
-      </View>
-  
+        <HStack mt={-75} ml={-20} spacing={0} style={{justifyContent: 'center', borderStyle: 'solid'}}>
+         <Text style={styles.logoText}>GasUp</Text>
+         <Image source={require('../../../assets/images/dragonLogo.png')} style={styles.logoImage}/>
+        </HStack>
+        
+
+     
       <Text style={styles.title}>Create a Account</Text>
+      <Input placeholder={"Username"}></Input>
       <Input placeholder={"First Name"} value={username} setValue={setUsername}></Input>
       <Input placeholder={"Last Name"}></Input>
       <Input placeholder={"Password"} value={password} setValue={setPassword} secureTextEntry={"true"}></Input>
@@ -42,11 +47,11 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: 15,
-    marginTop: 200,
+    marginTop: 55,
     marginBottom: 10,
     fontWeight: 'bold',
-    fontSize: 24,
-    color: 'Black',
+    fontSize: 30,
+    color: 'Black'
   },
   button:{
     marginLeft:12,
@@ -63,5 +68,23 @@ const styles = StyleSheet.create({
   },
   text:{
     marginLeft: 12
+  },
+  logoText:{
+    marginLeft: 15,
+    marginTop: 200,
+    marginBottom: 10,
+    fontWeight: 'bold',
+    fontSize: 60,
+    color: 'Black',
+
+  },
+  logoImage:{
+
+    marginLeft: 0,
+    marginTop: 200,
+    marginBottom: 10,
+    width: 60, 
+    height: 60,
+
   }
 })

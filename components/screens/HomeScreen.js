@@ -20,7 +20,7 @@ export default HomeScreen = () => {
                 <Text style={styles.logoText}>GasUp</Text>
                 <Image
                     style={styles.ProfilePic}
-                    source={require("/Users/whathebuddha/GasUp/GasUp/assets/images/dragonLogo.png")}                    
+                    source={require("../../assets/images/dragonLogo.png")}                    
                     />
                     <Pressable>
                         <Ionicons name="menu-outline" />
