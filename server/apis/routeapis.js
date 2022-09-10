@@ -7,7 +7,7 @@ module.exports = {
      * Endpoint for using MapBox matching API with a list of coordinates
      */
     app.post("/api/mapBox", async (req, res, next) => {
-      let coordinates = req.body["coordinates"];
+      let coordinates = req.body;
       let coordinate_string = "";
 
       coordinates = JSON.parse(coordinates);

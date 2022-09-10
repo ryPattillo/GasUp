@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Alert } from "react-native";
 import * as Location from "expo-location";
+import axios from "axios";
 
 const GPSContext = React.createContext();
 // The contexts and the providers are for creating data that can be
@@ -18,8 +19,21 @@ export function GPSProvider({ children }) {
   useEffect(() => {
     setInterval(async () => {
       let location = await Location.getCurrentPositionAsync({});
-      setCoordinateList(coordinateList.push(location));
-      console.log(coordinateList.length);
+      setCoordinateList(
+        coordinateList.push({
+          lat: location["coords"]["latitude"],
+          long: location["coords"]["longitude"],
+        })
+      );
+
+      if (coordinateList.length == 2) {
+        console.log(coordinateList);
+        const apiResult = await axios.get(
+          "https://gasup-362104.uc.r.appspot.com/api/mapBox",
+          coordinateList
+        );
+        console.log(apiResult);
+      }
     }, 500);
 
     (async () => {
