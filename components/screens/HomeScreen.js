@@ -31,7 +31,6 @@ export default function HomeScreen({ navigation }) {
       openDrawerOffset={100}
       styles={{
         drawer: {
-          height: "400px",
           shadowColor: "#000000",
           shadowOpacity: 0.8,
           shadowRadius: 3,
