@@ -20,6 +20,7 @@ export function GPSProvider({ children }) {
       let location = await Location.getCurrentPositionAsync({});
       setCoordinateList(coordinateList.push(location));
       console.log(coordinateList.length);
+      setGPSLocation(location);
     }, 500);
 
     (async () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -11,20 +11,85 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
+import firebase from "firebase/app";
+import "firebase/auth";
 import MapView from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, HStack, VStack } from "react-native-flex-layout";
 import { useAuth } from "../contexts/AuthContext";
 import Drawer from "react-native-drawer";
+import { useGPS } from "../contexts/LocationContext";
 export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
+  const { GPSLocation } = useGPS();
+  const firestore = firebase.firestore();
   const [drawerRightOpen, setDrawerRightOpen] = useState(false);
-  //   useEffect(() => {
-  //     // Redirects user if not logged in.
-  //     if (!currentUser) {
-  //       navigation.navigate("Login");
-  //     }
-  //   }, []);
+  const [inSession, setInSession] = useState(false);
+  const observer = useRef(null);
+  const inviteListener = useRef(null);
+  const timeout = useRef(null);
+
+  async function handleStop() {
+    try {
+      console.log("handle end");
+      clearInterval(timeout.current);
+      setInSession(false);
+      if (observer.current !== null) {
+        observer.current();
+      } else {
+        console.log("could not clear observer");
+      }
+    } catch (error) {}
+  }
+  async function handleGo() {
+    try {
+      console.log(GPSLocation);
+      await firestore.collection("sessions").doc(currentUser.uid).set({
+        driver: currentUser.email,
+        coordinates: GPSLocation,
+        rideStart: firestore.FieldValue.serverTimestamp(),
+      });
+      // Just posted the new doc to the 'searching' collection.
+      console.log("DOC CREATED");
+      setInSession(true);
+      // observer.current = firestore
+      //   .collection("searching")
+      //   .where(firebase.firestore.FieldPath.documentId(), "==", currentUser.uid)
+      //   .onSnapshot((docSnapshot) => {
+      //     docSnapshot.docChanges().forEach((change) => {
+      //       if (change.type === "added") {
+      //         console.log("added a doc");
+      //       } else {
+      //         console.log("something else");
+      //       }
+      //     });
+      //   });
+      clearInterval(timeout.current);
+      timeout.current = setInterval(() => {
+        console.log("interval ran, publish coords.");
+        firestore
+          .collection("sessions")
+          .doc(currentUser.uid)
+          .update({ coordinates: GPSLocation })
+          .then((res) => console.log(res))
+          .catch((err) => {
+            console.log(err);
+          });
+      }, 10000);
+    } catch (error) {
+      setInSession(false);
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    // Redirects user if not logged in.
+    if (!currentUser) {
+      navigation.navigate("Login");
+    }
+    return () => {
+      handleStop();
+    };
+  }, []);
   return (
     <Drawer
       type="static"
@@ -40,6 +105,9 @@ export default function HomeScreen({ navigation }) {
       tapToClose={true}
       tweenHandler={Drawer.tweenPresets.parallax}
       open={drawerRightOpen}
+      onClose={() => {
+        setDrawerRightOpen(false);
+      }}
       side={"right"}
       content={
         <View>
@@ -79,15 +147,28 @@ export default function HomeScreen({ navigation }) {
 
         {/* Map View */}
         <View>
-          <MapView style={styles.map} />
+          <MapView
+            showsUserLocation={inSession}
+            followsUserLocation={inSession}
+            style={styles.map}
+          />
         </View>
 
         {/* Bottom Card */}
         <View style={styles.bottomCard}>
           <Ionicons name="search" size={32} style={styles.searchButton} />
         </View>
-        <TouchableOpacity style={styles.goButton}>
-          <Text style={styles.goText}>{"GO"}</Text>
+        <TouchableOpacity
+          style={inSession ? styles.stopButton : styles.goButton}
+          onPress={() => {
+            if (inSession) {
+              handleStop();
+            } else {
+              handleGo();
+            }
+          }}
+        >
+          <Text style={{ color: "white" }}>{inSession ? "STOP" : "GO"}</Text>
         </TouchableOpacity>
       </View>
     </Drawer>
@@ -152,6 +233,17 @@ const styles = StyleSheet.create({
   goButton: {
     position: "absolute",
     backgroundColor: "#2F6424",
+    width: 75,
+    height: 75,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    bottom: 300,
+    left: Dimensions.get("window").width / 2 - 37,
+  },
+  stopButton: {
+    position: "absolute",
+    backgroundColor: "red",
     width: 75,
     height: 75,
     justifyContent: "center",
