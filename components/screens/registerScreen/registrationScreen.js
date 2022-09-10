@@ -23,7 +23,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 const Separator = () => <View style={styles.separator} />;
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [password, setPassword] = useState("");
@@ -90,6 +90,15 @@ export default function RegistrationScreen() {
           style={styles.button}
           title="SIGN UP"
           onPress={registerUser}
+        ></Button>
+        <Button
+          variant="contained"
+          color="black"
+          style={styles.button}
+          title="redirect "
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
         ></Button>
         <Separator />
         <Text style={styles.text}>

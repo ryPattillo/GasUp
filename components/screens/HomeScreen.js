@@ -14,8 +14,16 @@ import {
 import MapView from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, HStack, VStack } from "react-native-flex-layout";
+import { useAuth } from "../contexts/AuthContext";
 
-export default HomeScreen = () => {
+export default HomeScreen = ({ navigation }) => {
+  const { currentUser } = useAuth();
+  useEffect(() => {
+    // Redirects user if not logged in.
+    if (!currentUser) {
+      navigation.navigate("Login");
+    }
+  }, []);
   return (
     <View style={styles.mainContainer}>
       {/* Top Nav */}

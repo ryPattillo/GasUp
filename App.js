@@ -1,4 +1,3 @@
-import "react-native-gesture-handler";
 import { initializeApp } from "firebase/app";
 import * as React from "react";
 import MapView from "react-native-maps";
@@ -12,7 +11,6 @@ import LoginScreen from "./components/screens/loginScreen/LoginScreen";
 import RegistrationScreen from "./components/screens/registerScreen/registrationScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -20,9 +18,21 @@ export default function App() {
     <NavigationContainer>
       <AuthProvider>
         <Stack.Navigator>
-          <Stack.Screen name="Register" component={RegistrationScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Register"
+            component={RegistrationScreen}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>
