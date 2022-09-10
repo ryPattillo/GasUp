@@ -18,12 +18,12 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
-  useEffect(() => {
-    // Redirects user if not logged in.
-    if (!currentUser) {
-      navigation.navigate("Login");
-    }
-  }, []);
+  //   useEffect(() => {
+  //     // Redirects user if not logged in.
+  //     if (!currentUser) {
+  //       navigation.navigate("Login");
+  //     }
+  //   }, []);
   return (
     <View style={styles.mainContainer}>
       {/* Top Nav */}
