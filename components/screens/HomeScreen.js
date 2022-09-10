@@ -80,11 +80,15 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    // height: Dimensions.get('window').height,
-    height: 423,
+    height: Dimensions.get('window').height,
+    // height: 550,
+    borderTopColor: "#2F6424",
+    borderTopWidth: 10,
   },
   topNav: {
     marginTop: 40,
+    borderBottomWidth: 2,
+    borderBottomColor: '#2F6424',
   },
   logoText: {
     alignItems: "center",
@@ -125,7 +129,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
-    bottom: 300,
+    bottom: 50,
     left: Dimensions.get("window").width / 2 - 37,
+  },
+  goText: {
+    color: "white",
   },
 });
