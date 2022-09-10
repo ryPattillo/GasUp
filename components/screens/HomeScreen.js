@@ -15,10 +15,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { Stack, HStack, VStack } from "react-native-flex-layout";
 import { useAuth } from "../contexts/AuthContext";
 import Drawer from "react-native-drawer";
-import { useGPS } from "../contexts/LocationContext";
+// import { useGPS } from "../contexts/LocationContext";
+
 export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
-  const { GPSLocation } = useGPS();
+  // const { GPSLocation } = useGPS();
   const firestore = firebase.firestore();
   const [drawerBottomOpen, setDrawerBottomOpen] = useState(false);
   const [inSession, setInSession] = useState(false);
