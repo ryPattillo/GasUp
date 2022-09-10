@@ -6,16 +6,29 @@ import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
 import { useAuth } from '../../contexts/AuthContext';   
 
-const Separator = () => (
-  <View style={styles.separator} />
-);
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Alert,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from "react-native";
+import React, { useState } from "react";
+import Input from "../../Input";
+import { Button } from "@react-native-material/core";
+import { HStack } from "@react-native-material/core";
+import { useAuth } from "../../contexts/AuthContext";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-export default function LoginScreen(){
+const Separator = () => <View style={styles.separator} />;
 
-
-
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+export default function LoginScreen() {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const { signup, login } = useAuth();
 
   async function loginUser() {
@@ -67,6 +80,69 @@ export default function LoginScreen(){
 
 const styles = StyleSheet.create({
 
+=======
+      if (email === "") {
+        Alert.alert("Enter a email!");
+      } else if (password === "") {
+        Alert.alert("Enter a passoword!");
+      } else {
+        const result = await login(email, password);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return (
+    <KeyboardAwareScrollView
+      style={{ flex: 1, width: "100%" }}
+      keyboardShouldPersistTaps="never"
+      scrollEnabled={true}
+    >
+      <View style={styles.root}>
+        <HStack
+          mt={-75}
+          ml={-20}
+          spacing={0}
+          style={{ justifyContent: "center", borderStyle: "solid" }}
+        >
+          <Text style={styles.logoText}>GasUp</Text>
+          <Image
+            source={require("../../../assets/images/dragonLogo.png")}
+            style={styles.logoImage}
+          />
+        </HStack>
+
+        <Text style={styles.title}>Create a Account</Text>
+        <Input placeholder={"Email"} value={email} setValue={setEmail}></Input>
+        <Input
+          placeholder={"Password"}
+          value={password}
+          setValue={setPassword}
+          secureTextEntry={"true"}
+        ></Input>
+        <Button
+          variant="contained"
+          color="black"
+          style={styles.button}
+          title="LOGIN"
+          onPress={loginUser}
+        ></Button>
+
+        <Button
+          variant="contained"
+          color="black"
+          style={styles.button}
+          title="SIGN UP"
+        ></Button>
+        <Separator />
+        <Text style={styles.text}>Forgot your password? Click Here.</Text>
+      </View>
+    </KeyboardAwareScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
   root: {
     // flex: 1,
     // justifyContent: 'center',
@@ -86,6 +162,7 @@ const styles = StyleSheet.create({
     marginRight:12,
     marginTop:20,
     color: "#2F6424"
+
   },
   separator: {
     marginLeft: 9,
@@ -121,3 +198,4 @@ const styles = StyleSheet.create({
     flex: 1
   }
 })
+
