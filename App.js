@@ -7,7 +7,9 @@ import RegistrationScreen from './components/screens/registerScreen/registration
 export default function App() {
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} />
+      {/* <MapView style={styles.map} /> */}
+      <RegistrationScreen></RegistrationScreen>
+ 
     </View>
   );
 }
@@ -16,8 +18,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   map: {
     width: Dimensions.get('window').width,
