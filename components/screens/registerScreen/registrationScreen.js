@@ -101,6 +101,15 @@ export default function RegistrationScreen({ navigation }) {
           title="SIGN UP"
           onPress={registerUser}
         ></Button>
+        <Button
+          variant="contained"
+          color="#2F6424"
+          style={styles.button}
+          title="go home (DELETE ME)"
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+        ></Button>
         <Separator />
         <Text
           style={styles.text}
