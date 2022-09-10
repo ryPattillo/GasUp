@@ -3,6 +3,7 @@ const axios = require("axios");
 module.exports = {
   // APIs
   apis: function (app, admin) {
+    
     /**
      * Endpoint for using MapBox matching API with a list of coordinates
      */
