@@ -26,9 +26,10 @@ export function GPSProvider({ children }) {
         })
       );
 
-      if (coordinateList.length == 2) {
+      if (coordinateList.length == 5) {
         console.log(coordinateList);
-        const apiResult = await axios.get(
+
+        const apiResult = await axios.post(
           "https://gasup-362104.uc.r.appspot.com/api/mapBox",
           coordinateList
         );

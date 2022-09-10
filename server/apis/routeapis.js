@@ -3,12 +3,12 @@ const axios = require("axios");
 module.exports = {
   // APIs
   apis: function (app, admin) {
-    
     /**
      * Endpoint for using MapBox matching API with a list of coordinates
      */
     app.post("/api/mapBox", async (req, res, next) => {
       if (req && req.body) {
+        let coordinate_string = "";
         let coordinates = req.body;
         coordinates = JSON.parse(coordinates);
         // Get string list of coordinate for request
