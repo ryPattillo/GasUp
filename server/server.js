@@ -57,7 +57,7 @@ app.use((req, res, next) => {
 });
 
 const testAPIs = require("./apis/testapis.js");
-testAPIs.apis(app);
+testAPIs.apis(app, admin);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
