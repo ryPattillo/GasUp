@@ -19,13 +19,11 @@ module.exports = {
     {
       var vehicle_id;
       axios.get('https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=2012&make=Honda&model=Fit').then((resp)=>{
-
-        vehicle_id = resp["info"]["menuItem"][0]["value"];
+        vehicle_id = resp.data["info"]["menuItem"][0]["value"];
       }); 
 
       axios.get('https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/' + vehicle_id).then((resp)=>{
         res.status(200).json({info: resp.data});
-
       });
 
     });
