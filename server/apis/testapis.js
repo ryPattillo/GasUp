@@ -1,14 +1,15 @@
-async function handleTestAPI(req, res, next)
-{
-  res.status(200).json({info: "working!"});
-}
-
 module.exports = {
-  handleTestAPI: handleTestAPI,
-
   // APIs
-  apis: function (app) {
+  apis: function (app, admin) {
     // test APIs
-    app.post("/api/test", handleTestAPI);
+    app.post("/api/test", async (req, res, next) => 
+    {
+      admin.firestore()
+      .collection("users")
+      .doc(`${Math.floor(Math.random() * 10000000)}`)
+      .set({"username" : "fakeuser"});
+
+      res.status(200).json({info: "working2!"});
+    });
   },
 };
