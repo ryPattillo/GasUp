@@ -91,15 +91,6 @@ export default function RegistrationScreen({ navigation }) {
           title="SIGN UP"
           onPress={registerUser}
         ></Button>
-        <Button
-          variant="contained"
-          color="black"
-          style={styles.button}
-          title="redirect "
-          onPress={() => {
-            navigation.navigate("Home");
-          }}
-        ></Button>
         <Separator />
         <Text style={styles.text}>
           Already have an account? Click here to sign in.
