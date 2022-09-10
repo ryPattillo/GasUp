@@ -15,52 +15,84 @@ import MapView from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, HStack, VStack } from "react-native-flex-layout";
 import { useAuth } from "../contexts/AuthContext";
-
-export default HomeScreen = ({ navigation }) => {
+import Drawer from "react-native-drawer";
+export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
-  useEffect(() => {
-    // Redirects user if not logged in.
-    if (!currentUser) {
-      navigation.navigate("Login");
-    }
-  }, []);
+  const [drawerRightOpen, setDrawerRightOpen] = useState(false);
+  //   useEffect(() => {
+  //     // Redirects user if not logged in.
+  //     if (!currentUser) {
+  //       navigation.navigate("Login");
+  //     }
+  //   }, []);
   return (
-    <View style={styles.mainContainer}>
-      {/* Top Nav */}
-      <View style={styles.topNav}>
-        <HStack>
-          <TouchableOpacity>
-            <Ionicons name="menu-outline" size={32} style={styles.iconLeft} />
-          </TouchableOpacity>
+    <Drawer
+      type="static"
+      openDrawerOffset={100}
+      styles={{
+        drawer: {
+          shadowColor: "#000000",
+          shadowOpacity: 0.8,
+          shadowRadius: 3,
+        },
+        main: { paddingLeft: 3 },
+      }}
+      tapToClose={true}
+      tweenHandler={Drawer.tweenPresets.parallax}
+      open={drawerRightOpen}
+      side={"right"}
+      content={
+        <View>
+          <Text>test</Text>
+        </View>
+      }
+    >
+      <View style={styles.mainContainer}>
+        {/* Top Nav */}
+        <View style={styles.topNav}>
+          <HStack>
+            <TouchableOpacity>
+              <Ionicons name="menu-outline" size={32} style={styles.iconLeft} />
+            </TouchableOpacity>
 
-          <Text style={styles.logoText}>GasUp</Text>
+            <Text style={styles.logoText}>GasUp</Text>
 
-          <Image
-            style={styles.Logo}
-            source={require("../../assets/images/dragonLogo.png")}
-          />
+            <Image
+              style={styles.Logo}
+              source={require("../../assets/images/dragonLogo.png")}
+            />
 
-          <TouchableOpacity>
-            <Ionicons name="person-circle" size={32} style={styles.iconRight} />
-          </TouchableOpacity>
-        </HStack>
+            <TouchableOpacity>
+              <Ionicons
+                name="person-circle"
+                size={32}
+                onPress={() => {
+                  console.log("set");
+
+                  setDrawerRightOpen(drawerRightOpen ? false : true);
+                }}
+                style={styles.iconRight}
+              />
+            </TouchableOpacity>
+          </HStack>
+        </View>
+
+        {/* Map View */}
+        <View>
+          <MapView style={styles.map} />
+        </View>
+
+        {/* Bottom Card */}
+        <View style={styles.bottomCard}>
+          <Ionicons name="search" size={32} style={styles.searchButton} />
+        </View>
+        <TouchableOpacity style={styles.goButton}>
+          <Text style={styles.goText}>{"GO"}</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* Map View */}
-      <View>
-        <MapView style={styles.map} />
-      </View>
-
-      {/* Bottom Card */}
-      <View style={styles.bottomCard}>
-        <Ionicons name="search" size={32} style={styles.searchButton} />
-      </View>
-      <TouchableOpacity style={styles.goButton}>
-        <Text style={styles.goText}>{"GO"}</Text>
-      </TouchableOpacity>
-    </View>
+    </Drawer>
   );
-};
+}
 
 // COMPONENT STYLES
 const styles = StyleSheet.create({

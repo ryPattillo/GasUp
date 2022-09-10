@@ -12,34 +12,32 @@ import RegistrationScreen from "./components/screens/registerScreen/registration
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProfileScreen from "./components/screens/profileScreen/ProfileScreen";
+import { GPSProvider } from "./components/contexts/LocationContext";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View>
-      <ProfileScreen/>
-    </View>
-    // <NavigationContainer>
-    //   <AuthProvider>
-    //     <Stack.Navigator>
-    //       <Stack.Screen
-    //         options={{ headerShown: false }}
-    //         name="Register"
-    //         component={RegistrationScreen}
-    //       />
-    //       <Stack.Screen
-    //         name="Login"
-    //         component={LoginScreen}
-    //         options={{ headerShown: false }}
-    //       />
-    //       <Stack.Screen
-    //         name="Home"
-    //         component={HomeScreen}
-    //         options={{ headerShown: false }}
-    //       />
-    //     </Stack.Navigator>
-    //   </AuthProvider>
-    // </NavigationContainer>
+    <NavigationContainer>
+      <AuthProvider>
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Register"
+            component={RegistrationScreen}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </AuthProvider>
+    </NavigationContainer>
   );
 }
 
