@@ -12,6 +12,7 @@ export default function Input({value, setValue, placeholder,secureTextEntry }){
         onChangeText={setValue}
         value={value}
         placeholder={placeholder}
+        secureTextEntry={secureTextEntry}
  
       />
     </SafeAreaView>

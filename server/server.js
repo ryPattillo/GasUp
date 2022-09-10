@@ -11,7 +11,9 @@ admin.initializeApp({
     type: process.env.type,
     project_id: process.env.project_id,
     private_key_id: process.env.private_key_id,
-    private_key: process.env.private_key ? process.env.private_key.replace(/\\n/g, "\n") : process.env.private_key,
+    private_key: process.env.private_key
+      ? process.env.private_key.replace(/\\n/g, "\n")
+      : process.env.private_key,
     client_email: process.env.client_email,
     client_id: process.env.client_id,
     auth_uri: process.env.auth_uri,
@@ -57,9 +59,18 @@ app.use((req, res, next) => {
 });
 
 const testAPIs = require("./apis/testapis.js");
-testAPIs.apis(app, admin);
+const driveAPIs = require("./apis/driveapis.js");
+const carAPIs = require("./apis/carapis.js");
+const routeAPIs = require("./apis/routeapis.js");
+const signupAPIs = require("./apis/signupapis.js");
 
-const PORT = process.env.PORT || 5000;
+testAPIs.apis(app, admin);
+driveAPIs.apis(app, admin);
+carAPIs.apis(app, admin);
+routeAPIs.apis(app, admin);
+signupAPIs.apis(app, admin);
+
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-  });
+  console.log(`Server is running on port ${PORT}.`);
+});
