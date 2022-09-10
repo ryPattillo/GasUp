@@ -11,29 +11,32 @@ import LoginScreen from "./components/screens/loginScreen/LoginScreen";
 import RegistrationScreen from "./components/screens/registerScreen/registrationScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { GPSProvider } from "./components/contexts/LocationContext";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <AuthProvider>
-        <Stack.Navigator>
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="Register"
-            component={RegistrationScreen}
-          />
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
+        <GPSProvider>
+          <Stack.Navigator>
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Register"
+              component={RegistrationScreen}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </GPSProvider>
       </AuthProvider>
     </NavigationContainer>
   );
