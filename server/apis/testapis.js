@@ -1,6 +1,8 @@
-import Axios from 'axios';
+const axios = require('axios').default;
 
 module.exports = {
+
+
   // APIs
   apis: function (app, admin) {
     // test APIs
