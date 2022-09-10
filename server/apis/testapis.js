@@ -19,7 +19,7 @@ module.exports = {
     app.get("/api/carInfo", async (req, res, next) => 
     {
       var data;
-      axios.get('https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=2012&make=Honda&model=Fit').then((res)=>{data=res});
+      axios.get('https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=2012&make=Honda&model=Fit').then((res)=>{data=res.data});
       res.status(200).json({info: data});
     });
 
