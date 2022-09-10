@@ -9,8 +9,6 @@ export function useGPS() {
   return useContext(GPSContext);
 }
 export function GPSProvider({ children }) {
-  console.log("Test");
-
   const [GPSLocation, setGPSLocation] = useState();
   const [coordinateList, setCoordinateList] = useState([]);
   const [totalDistance, setTotalDistance] = useState(0);
@@ -20,8 +18,7 @@ export function GPSProvider({ children }) {
   useEffect(() => {
     setInterval(async () => {
       let location = await Location.getCurrentPositionAsync({});
-      console.log(location.coords);
-    }, 5);
+    }, 500);
 
     (async () => {
       console.log("requesting permission");
