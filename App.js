@@ -1,4 +1,3 @@
-
 import { initializeApp } from "firebase/app";
 import * as React from "react";
 import MapView from "react-native-maps";
@@ -8,17 +7,16 @@ import { AuthProvider } from "./components/contexts/AuthContext";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { GPSProvider } from "./components/contexts/LocationContext";
+import HomeScreen from "./components/screens/loginScreen/LoginScreen";
+import LoginScreen from "./components/screens/loginScreen/LoginScreen";
 
 export default function App() {
   return (
     <AuthProvider>
-      <GPSProvider>
-        <View style={styles.container}>
-          {/* <MapView style={styles.map} /> */}
-          <RegistrationScreen></RegistrationScreen>
-        </View>
-      </GPSProvider>
+      <View style={styles.container}>
+        {/* <MapView style={styles.map} /> */}
+        <LoginScreen />
+      </View>
     </AuthProvider>
   );
 }
