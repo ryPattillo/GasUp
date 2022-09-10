@@ -7,8 +7,8 @@ module.exports = {
       admin
         .firestore()
         .collection("users")
-        .doc(4493237)
-        .set("User info json goes here");
+        .doc("4493237")
+        .set({ username: "ryan" });
       res.status(200).json({ info: "working2!" });
     });
   },
