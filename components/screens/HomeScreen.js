@@ -23,7 +23,7 @@ export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
   const { GPSLocation } = useGPS();
   const firestore = firebase.firestore();
-  const [drawerRightOpen, setDrawerRightOpen] = useState(false);
+  const [drawerBottomOpen, setDrawerBottomOpen] = useState(false);
   const [inSession, setInSession] = useState(false);
   const observer = useRef(null);
   const inviteListener = useRef(null);
@@ -93,25 +93,28 @@ export default function HomeScreen({ navigation }) {
   return (
     <Drawer
       type="static"
-      openDrawerOffset={100}
+      openDrawerOffset={370}
+      onCloseStart={() => {
+        setDrawerBottomOpen(false);
+      }}
       styles={{
         drawer: {
           shadowColor: "#000000",
           shadowOpacity: 0.8,
           shadowRadius: 3,
+          backgroundColor: "#1E1E1E",
+          borderBottomLeftRadius: 15,
+          borderBottomRightRadius: 15,
         },
-        main: { paddingLeft: 3 },
+        main: { paddingBottom: 3 },
       }}
       tapToClose={true}
       tweenHandler={Drawer.tweenPresets.parallax}
-      open={drawerRightOpen}
-      onClose={() => {
-        setDrawerRightOpen(false);
-      }}
-      side={"right"}
+      open={drawerBottomOpen}
+      side={"bottom"}
       content={
-        <View>
-          <Text>test</Text>
+        <View style={styles.drawerOpen}>
+          <Text style={styles.addText}>Can we see this?</Text>
         </View>
       }
     >
@@ -134,11 +137,6 @@ export default function HomeScreen({ navigation }) {
               <Ionicons
                 name="person-circle"
                 size={32}
-                onPress={() => {
-                  console.log("set");
-
-                  setDrawerRightOpen(drawerRightOpen ? false : true);
-                }}
                 style={styles.iconRight}
               />
             </TouchableOpacity>
@@ -154,22 +152,34 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
 
-        {/* Bottom Card */}
-        <View style={styles.bottomCard}>
-          <Ionicons name="search" size={32} style={styles.searchButton} />
-        </View>
-        <TouchableOpacity
-          style={inSession ? styles.stopButton : styles.goButton}
-          onPress={() => {
-            if (inSession) {
-              handleStop();
-            } else {
-              handleGo();
-            }
-          }}
-        >
-          <Text style={{ color: "white" }}>{inSession ? "STOP" : "GO"}</Text>
-        </TouchableOpacity>
+        {/* Bottom Drawer */}
+        {drawerBottomOpen == true ? (
+          <TouchableOpacity
+            style={inSession ? styles.stopButton : styles.goButton}
+            onPress={() => {
+              if (inSession) {
+                handleStop();
+              } else {
+                handleGo();
+              }
+            }}
+          >
+            <Text style={styles.goText}>{inSession ? "STOP" : "GO"}</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              console.log("other opacity.");
+              setDrawerBottomOpen(drawerBottomOpen ? false : true);
+            }}
+          >
+            <Ionicons
+              name="chevron-up-outline"
+              size={32}
+              style={styles.drawerUp}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </Drawer>
   );
@@ -194,10 +204,14 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width,
     // height: Dimensions.get('window').height,
-    height: 423,
+    height: 600,
+    borderTopColor: "#2F6424",
+    borderTopWidth: 10,
   },
   topNav: {
     marginTop: 40,
+    borderBottomWidth: 2,
+    borderBottomColor: "#2F6424",
   },
   logoText: {
     alignItems: "center",
@@ -238,7 +252,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
-    bottom: 300,
+    bottom: 50,
     left: Dimensions.get("window").width / 2 - 37,
   },
   stopButton: {
@@ -251,5 +265,22 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     bottom: 300,
     left: Dimensions.get("window").width / 2 - 37,
+  },
+  goText: {
+    color: "white",
+  },
+  addText: {
+    fontWeight: "bold",
+    fontSize: 14,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    color: "white",
+    position: "relative",
+  },
+  drawerOpen: {
+    color: "#2F6424",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 400,
   },
 });
