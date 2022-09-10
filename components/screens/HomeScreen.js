@@ -16,9 +16,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Stack, HStack, VStack } from "react-native-flex-layout";
 import { useAuth } from "../contexts/AuthContext";
 import Drawer from "react-native-drawer";
+
 export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
-  const [drawerRightOpen, setDrawerRightOpen] = useState(false);
+  const [drawerBottomOpen, setDrawerBottomOpen] = useState(false);
   //   useEffect(() => {
   //     // Redirects user if not logged in.
   //     if (!currentUser) {
@@ -28,22 +29,28 @@ export default function HomeScreen({ navigation }) {
   return (
     <Drawer
       type="static"
-      openDrawerOffset={100}
+      openDrawerOffset={370}
+        onCloseStart={() => {
+            setDrawerBottomOpen(false);
+        }}
       styles={{
         drawer: {
-          shadowColor: "#000000",
-          shadowOpacity: 0.8,
-          shadowRadius: 3,
+            shadowColor: "#000000",
+            shadowOpacity: 0.8,
+            shadowRadius: 3, 
+            backgroundColor: "#1E1E1E",
+            borderBottomLeftRadius: 15,
+            borderBottomRightRadius: 15,
         },
-        main: { paddingLeft: 3 },
+          main: { paddingBottom: 3 },
       }}
       tapToClose={true}
       tweenHandler={Drawer.tweenPresets.parallax}
-      open={drawerRightOpen}
-      side={"right"}
+      open={drawerBottomOpen}
+      side={"bottom"}
       content={
-        <View>
-          <Text>test</Text>
+        <View style={styles.drawerOpen}>
+          <Text style={styles.addText}>Can we see this?</Text>
         </View>
       }
     >
@@ -66,13 +73,7 @@ export default function HomeScreen({ navigation }) {
               <Ionicons
                 name="person-circle"
                 size={32}
-                onPress={() => {
-                  console.log("set");
-
-                  setDrawerRightOpen(drawerRightOpen ? false : true);
-                }}
-                style={styles.iconRight}
-              />
+                style={styles.iconRight}/>
             </TouchableOpacity>
           </HStack>
         </View>
@@ -82,13 +83,17 @@ export default function HomeScreen({ navigation }) {
           <MapView style={styles.map} />
         </View>
 
-        {/* Bottom Card */}
-        <View style={styles.bottomCard}>
-          <Ionicons name="search" size={32} style={styles.searchButton} />
-        </View>
-        <TouchableOpacity style={styles.goButton}>
-          <Text style={styles.goText}>{"GO"}</Text>
-        </TouchableOpacity>
+        {/* Bottom Drawer */}
+        {
+            drawerBottomOpen == true ? 
+            <TouchableOpacity style={styles.goButton}>
+                <Text style={styles.goText}>{"GO"}</Text>
+            </TouchableOpacity> 
+            :         
+            <TouchableOpacity onPress={() => {setDrawerBottomOpen(drawerBottomOpen ? false : true);}}>
+                <Ionicons name="chevron-up-outline" size={32}  style={styles.drawerUp}/>
+            </TouchableOpacity>
+        }
       </View>
     </Drawer>
   );
@@ -112,8 +117,8 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get('window').height,
-    // height: 550,
+    // height: Dimensions.get('window').height,
+    height: 600,
     borderTopColor: "#2F6424",
     borderTopWidth: 10,
   },
@@ -167,4 +172,18 @@ const styles = StyleSheet.create({
   goText: {
     color: "white",
   },
+  addText: {
+    fontWeight: "bold",
+    fontSize: 14,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    color: "white",
+    position: "relative",
+  },
+  drawerOpen: {
+    color: "#2F6424",
+    justifyContent: "center",
+    alignItems: "center", 
+    marginBottom: 400,
+  }
 });
