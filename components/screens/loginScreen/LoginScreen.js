@@ -53,7 +53,7 @@ export default function LoginScreen(){
       <Input placeholder={"Password"} value={password} setValue={setPassword} secureTextEntry={"true"}></Input>
       <Button variant="contained"color="black" style={styles.button} title="LOGIN" onPress={loginUser}></Button>
 
-      <Button variant="contained"color="black" style={styles.button} title="SIGN UP" ></Button>
+      <Button variant="contained"color="#2F6424" style={styles.button} title="SIGN UP" ></Button>
       <Separator/>
       <Text style={styles.text}>Forgot your password? Click Here.</Text>
     </View>
@@ -79,12 +79,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: 'bold',
     fontSize: 30,
-    color: 'Black'
+    color: '#2F6424'
   },
   button:{
     marginLeft:12,
     marginRight:12,
-    marginTop:20
+    marginTop:20,
+    color: "#2F6424"
   },
   separator: {
     marginLeft: 9,
@@ -95,7 +96,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   text:{
-    marginLeft: 12
+    marginLeft: 12,
+    color:"#2F6424"
   },
   logoText:{
     marginLeft: 15,
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: 'bold',
     fontSize: 60,
-    color: 'Black',
+    color: '#2F6424',
 
   },
   logoImage:{
