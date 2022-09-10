@@ -5,21 +5,24 @@ module.exports = {
   apis: function (app, admin) {
     /**
      * Endpoint for using MapBox matching API with a list of coordinates
+     * 
+     * TODO: get this working - MapBox seems to be denying acccess
      */
     app.post("/api/mapBox", async (req, res, next) => {
       if (req && req.body) {
         let coordinate_string = "";
         let coordinates = req.body;
-        coordinates = JSON.parse(coordinates);
-        // Get string list of coordinate for request
+        // console.log(coordinates);
+        // // Get string list of coordinate for request
         coordinates.map((element) => {
           coordinate_string += element.lat + "," + element.long + ";";
         });
-        // Ensure that last is not in request
+        //Ensure that last is not in request
         coordinate_string = coordinate_string.substring(
           0,
           coordinate_string.length - 1
         );
+        console.log(coordinate_string);
 
         try {
           const resp = await axios.get(
