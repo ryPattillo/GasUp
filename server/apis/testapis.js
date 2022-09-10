@@ -1,3 +1,5 @@
+import Axios from 'axios';
+
 module.exports = {
   // APIs
   apis: function (app, admin) {
