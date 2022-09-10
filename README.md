@@ -1,4 +1,5 @@
 ## Building App With Expo
 
-npm i
+npm i 
+
 expo start
