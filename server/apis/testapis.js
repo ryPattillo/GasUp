@@ -22,7 +22,7 @@ module.exports = {
         vehicle_id = resp.data["info"]["menuItem"][0]["value"];
       }); 
 
-      axios.get('https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/' + vehicle_id).then((resp)=>{
+      axios.get('https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/26425').then((resp)=>{
         res.status(200).json({info: resp.data});
       });
 
