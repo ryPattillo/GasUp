@@ -6,13 +6,11 @@ module.exports = {
     /**
      * Endpoint for using MapBox matching API with a list of coordinates
      */
-    app.get("/api/mapBox", async (req, res, next) => {
-      coordinates = [
-        { lat: -122.397484, long: 37.792809 },
-        { lat: -122.39746, long: 37.792693 },
-        { lat: -122.39745, long: 37.792645 },
-      ];
-      var coordinate_string = "";
+    app.post("/api/mapBox", async (req, res, next) => {
+      let coordinates = req.body["coordinates"];
+      let coordinate_string = "";
+
+      coordinates = JSON.parse(coordinates);
 
       // Get string list of coordinate for request
       coordinates.map((element) => {
@@ -24,6 +22,8 @@ module.exports = {
         0,
         coordinate_string.length - 1
       );
+
+      console.log(coordinate_string);
 
       try {
         const resp = await axios.get(
@@ -45,7 +45,7 @@ module.exports = {
           res.status(400).json({ error: "Bad response from MapBox api" });
         }
       } catch (error) {
-        res.status(400).json({ error: "Error with MapBox api" });
+        res.status(400).json({ error: "Error with MapBox api " });
       }
     });
   },
