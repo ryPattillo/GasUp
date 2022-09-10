@@ -44,7 +44,6 @@ export default function HomeScreen({ navigation }) {
       await firestore.collection("sessions").doc(currentUser.uid).set({
         driver: currentUser.email,
         coordinates: GPSLocation,
-        rideStart: firestore.FieldValue.serverTimestamp(),
       });
       // Just posted the new doc to the 'searching' collection.
       console.log("DOC CREATED");
@@ -105,7 +104,7 @@ export default function HomeScreen({ navigation }) {
         },
         main: { paddingBottom: 3 },
       }}
-      tapToClose={true}
+      tapToClose={false}
       tweenHandler={Drawer.tweenPresets.parallax}
       open={drawerBottomOpen}
       side={"bottom"}
@@ -150,7 +149,6 @@ export default function HomeScreen({ navigation }) {
             </TouchableOpacity>
           </HStack>
         </View>
-
         {/* Map View */}
         <View>
           <MapView
@@ -159,9 +157,7 @@ export default function HomeScreen({ navigation }) {
             style={styles.map}
           />
         </View>
-
-        {/* Bottom Drawer */}
-        {drawerBottomOpen == true ? (
+        {!drawerBottomOpen && (
           <TouchableOpacity
             style={inSession ? styles.stopButton : styles.goButton}
             onPress={() => {
@@ -174,20 +170,18 @@ export default function HomeScreen({ navigation }) {
           >
             <Text style={styles.goText}>{inSession ? "STOP" : "GO"}</Text>
           </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              console.log("other opacity.");
-              setDrawerBottomOpen(drawerBottomOpen ? false : true);
-            }}
-          >
-            <Ionicons
-              name="chevron-up-outline"
-              size={32}
-              style={styles.drawerUp}
-            />
-          </TouchableOpacity>
         )}
+        <Ionicons
+          onPress={() => {
+            console.log("other opacity.");
+            setDrawerBottomOpen(drawerBottomOpen ? false : true);
+          }}
+          name={
+            drawerBottomOpen ? "chevron-down-outline" : "chevron-up-outline"
+          }
+          size={32}
+          style={styles.drawerUp}
+        />
       </View>
     </Drawer>
   );
@@ -260,7 +254,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
-    bottom: 75,
+    bottom: 150,
     left: Dimensions.get("window").width / 2 - 37,
   },
   stopButton: {
@@ -271,7 +265,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
-    bottom: 300,
+    bottom: 150,
     left: Dimensions.get("window").width / 2 - 37,
   },
   goText: {
