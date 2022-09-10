@@ -14,6 +14,8 @@ import Input from "../../Input";
 import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
 import { useAuth } from "../../contexts/AuthContext";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+KeyboardAwareScrollView;
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -37,56 +39,51 @@ export default function LoginScreen() {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+    <KeyboardAwareScrollView
+      style={{ flex: 1, width: "100%" }}
+      keyboardShouldPersistTaps="never"
+      scrollEnabled={true}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.root}>
-          <HStack
-            mt={-75}
-            ml={-20}
-            spacing={0}
-            style={{ justifyContent: "center", borderStyle: "solid" }}
-          >
-            <Text style={styles.logoText}>GasUp</Text>
-            <Image
-              source={require("../../../assets/images/dragonLogo.png")}
-              style={styles.logoImage}
-            />
-          </HStack>
+      <View style={styles.root}>
+        <HStack
+          mt={-75}
+          ml={-20}
+          spacing={0}
+          style={{ justifyContent: "center", borderStyle: "solid" }}
+        >
+          <Text style={styles.logoText}>GasUp</Text>
+          <Image
+            source={require("../../../assets/images/dragonLogo.png")}
+            style={styles.logoImage}
+          />
+        </HStack>
 
-          <Text style={styles.title}>Create a Account</Text>
-          <Input
-            placeholder={"Email"}
-            value={email}
-            setValue={setEmail}
-          ></Input>
-          <Input
-            placeholder={"Password"}
-            value={password}
-            setValue={setPassword}
-            secureTextEntry={"true"}
-          ></Input>
-          <Button
-            variant="contained"
-            color="black"
-            style={styles.button}
-            title="LOGIN"
-            onPress={loginUser}
-          ></Button>
+        <Text style={styles.title}>Create a Account</Text>
+        <Input placeholder={"Email"} value={email} setValue={setEmail}></Input>
+        <Input
+          placeholder={"Password"}
+          value={password}
+          setValue={setPassword}
+          secureTextEntry={"true"}
+        ></Input>
+        <Button
+          variant="contained"
+          color="black"
+          style={styles.button}
+          title="LOGIN"
+          onPress={loginUser}
+        ></Button>
 
-          <Button
-            variant="contained"
-            color="black"
-            style={styles.button}
-            title="SIGN UP"
-          ></Button>
-          <Separator />
-          <Text style={styles.text}>Forgot your password? Click Here.</Text>
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        <Button
+          variant="contained"
+          color="black"
+          style={styles.button}
+          title="SIGN UP"
+        ></Button>
+        <Separator />
+        <Text style={styles.text}>Forgot your password? Click Here.</Text>
+      </View>
+    </KeyboardAwareScrollView>
   );
 }
 
