@@ -15,7 +15,6 @@ import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
 import { useAuth } from "../../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-KeyboardAwareScrollView;
 
 const Separator = () => <View style={styles.separator} />;
 
