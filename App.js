@@ -1,22 +1,41 @@
-
 import { initializeApp } from "firebase/app";
 import * as React from "react";
 import MapView from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import RegistrationScreen from "./components/screens/registerScreen/registrationScreen";
 import { AuthProvider } from "./components/contexts/AuthContext";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import HomeScreen from "./components/screens/HomeScreen";
+import LoginScreen from "./components/screens/loginScreen/LoginScreen";
+import RegistrationScreen from "./components/screens/registerScreen/registrationScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <AuthProvider>
-      <View style={styles.container}>
-        {/* <MapView style={styles.map} /> */}
-        <RegistrationScreen></RegistrationScreen>
-      </View>
-    </AuthProvider>
+    <NavigationContainer>
+      <AuthProvider>
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Register"
+            component={RegistrationScreen}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </AuthProvider>
+    </NavigationContainer>
   );
 }
 

@@ -1,11 +1,7 @@
 import {
   View,
   Text,
-  ScrollView,
   StyleSheet,
-  TextInput,
-  SafeAreaView,
-  useWindowDimensions,
   Image,
   Alert,
   KeyboardAvoidingView,
@@ -18,28 +14,23 @@ import Input from "../../Input";
 import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
 import { useAuth } from "../../contexts/AuthContext";
-
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Separator = () => <View style={styles.separator} />;
 
-export default function RegistrationScreen({ navigation }) {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const { signup, logout } = useAuth();
+  const { signup, login } = useAuth();
 
-  async function registerUser() {
+  async function loginUser() {
     try {
-      if (firstname === "") {
-        Alert.alert("Enter a first name!");
-      } else if (lastname === "") {
-        Alert.alert("Enter a last name!");
+      if (email === "") {
+        Alert.alert("Enter a email!");
       } else if (password === "") {
-        Alert.alert("Enter a password");
+        Alert.alert("Enter a passoword!");
       } else {
-        const result = await signup(email, password);
+        const result = await login(email, password);
       }
     } catch (error) {
       console.log(error);
@@ -67,16 +58,6 @@ export default function RegistrationScreen({ navigation }) {
         </HStack>
 
         <Text style={styles.title}>Create a Account</Text>
-        <Input
-          placeholder={"First Name"}
-          value={firstname}
-          setValue={setFirstname}
-        ></Input>
-        <Input
-          placeholder={"Last Name"}
-          value={lastname}
-          setValue={setLastname}
-        ></Input>
         <Input placeholder={"Email"} value={email} setValue={setEmail}></Input>
         <Input
           placeholder={"Password"}
@@ -88,17 +69,20 @@ export default function RegistrationScreen({ navigation }) {
           variant="contained"
           color="black"
           style={styles.button}
+          title="LOGIN"
+          onPress={loginUser}
+        ></Button>
+
+        <Button
+          variant="contained"
+          color="black"
+          style={styles.button}
           title="SIGN UP"
-          onPress={registerUser}
         ></Button>
         <Separator />
-        <Text style={styles.text}>
-          Already have an account? Click here to sign in.
-        </Text>
+        <Text style={styles.text}>Forgot your password? Click Here.</Text>
       </View>
     </KeyboardAwareScrollView>
-    // </TouchableWithoutFeedback>
-    // </KeyboardAvoidingView>
   );
 }
 
