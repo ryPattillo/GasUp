@@ -18,7 +18,7 @@ import Input from "../../Input";
 import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
 import { useAuth } from "../../contexts/AuthContext";
-
+import axios from 'axios';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Separator = () => <View style={styles.separator} />;
@@ -40,6 +40,13 @@ export default function RegistrationScreen({ navigation }) {
         Alert.alert("Enter a password");
       } else {
         const result = await signup(email, password);
+        const data = {
+          firstName: firstname,
+          lastName: lastname,
+          email: email
+        }
+        const apiResult = await axios.post('https://gasup-362104.uc.r.appspot.com/api/signUp', data);
+        console.log(apiResult);
       }
     } catch (error) {
       console.log(error);
@@ -86,7 +93,7 @@ export default function RegistrationScreen({ navigation }) {
         ></Input>
         <Button
           variant="contained"
-          color="black"
+          color="#2F6424"
           style={styles.button}
           title="SIGN UP"
           onPress={registerUser}
@@ -115,12 +122,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: "bold",
     fontSize: 30,
-    color: "Black",
+    color: "#2F6424",
   },
   button: {
     marginLeft: 12,
     marginRight: 12,
     marginTop: 20,
+    color:"#2F6424"
   },
   separator: {
     marginLeft: 9,
@@ -132,6 +140,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 12,
+    color:"#2F6424"
   },
   logoText: {
     marginLeft: 15,
@@ -139,7 +148,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: "bold",
     fontSize: 60,
-    color: "Black",
+    color: "#2F6424",
   },
   logoImage: {
     marginLeft: 0,
