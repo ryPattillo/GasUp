@@ -4,8 +4,8 @@ module.exports = {
   // APIs
   apis: function (app, admin) {
     app.post("/api/signUp", async (req, res, next) => {
-      console.log(req);
-      if (req && req.data) {
+      console.log(req.body);
+      if (req && req.body) {
         admin
           .firestore()
           .collection("users")
