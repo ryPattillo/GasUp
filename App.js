@@ -7,14 +7,17 @@ import { AuthProvider } from "./components/contexts/AuthContext";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { GPSProvider } from "./components/contexts/LocationContext";
 
 export default function App() {
   return (
     <AuthProvider>
-      <View style={styles.container}>
-        {/* <MapView style={styles.map} /> */}
-        <RegistrationScreen></RegistrationScreen>
-      </View>
+      <GPSProvider>
+        <View style={styles.container}>
+          {/* <MapView style={styles.map} /> */}
+          <RegistrationScreen></RegistrationScreen>
+        </View>
+      </GPSProvider>
     </AuthProvider>
   );
 }
