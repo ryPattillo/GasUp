@@ -18,7 +18,7 @@ import Input from "../../Input";
 import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
 import { useAuth } from "../../contexts/AuthContext";
-import axios from 'axios';
+import axios from "axios";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Separator = () => <View style={styles.separator} />;
@@ -43,9 +43,12 @@ export default function RegistrationScreen({ navigation }) {
         const data = {
           firstName: firstname,
           lastName: lastname,
-          email: email
-        }
-        const apiResult = await axios.post('https://gasup-362104.uc.r.appspot.com/api/signUp', data);
+          email: email,
+        };
+        const apiResult = await axios.post(
+          "https://gasup-362104.uc.r.appspot.com/api/signUp",
+          data
+        );
         console.log(apiResult);
       }
     } catch (error) {
@@ -99,7 +102,12 @@ export default function RegistrationScreen({ navigation }) {
           onPress={registerUser}
         ></Button>
         <Separator />
-        <Text style={styles.text}>
+        <Text
+          style={styles.text}
+          onPress={() => {
+            navigation.navigate("Login");
+          }}
+        >
           Already have an account? Click here to sign in.
         </Text>
       </View>
@@ -128,7 +136,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
     marginTop: 20,
-    color:"#2F6424"
+    color: "#2F6424",
   },
   separator: {
     marginLeft: 9,
@@ -140,7 +148,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 12,
-    color:"#2F6424"
+    color: "#2F6424",
   },
   logoText: {
     marginLeft: 15,
