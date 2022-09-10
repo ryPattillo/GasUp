@@ -14,7 +14,7 @@ module.exports = {
           .set(req.data());
         res.status(200).json({ info: "working2!" });
       } else {
-        console.log("ERROR");
+        res.status(404).json({ info: "NOt working" });
       }
     });
   },
