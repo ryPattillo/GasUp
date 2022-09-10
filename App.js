@@ -21,19 +21,19 @@ export default function App() {
         <GPSProvider>
           <Stack.Navigator>
             <Stack.Screen
-              options={{ headerShown: false }}
               name="Register"
               component={RegistrationScreen}
+              options={{ headerShown: false, gestureEnabled: false }}
             />
             <Stack.Screen
               name="Login"
               component={LoginScreen}
-              options={{ headerShown: false }}
+              options={{ headerShown: false, gestureEnabled: false }}
             />
             <Stack.Screen
               name="Home"
               component={HomeScreen}
-              options={{ headerShown: false }}
+              options={{ headerShown: false, gestureEnabled: false }}
             />
           </Stack.Navigator>
         </GPSProvider>
