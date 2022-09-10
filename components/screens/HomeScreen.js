@@ -3,13 +3,10 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
   Image,
-  StatusBar,
   Dimensions,
-  Container,
   TouchableOpacity,
-  Pressable,
+  ScrollView,
 } from "react-native";
 import MapView from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
@@ -35,10 +32,10 @@ export default function HomeScreen({ navigation }) {
         }}
       styles={{
         drawer: {
-            shadowColor: "#000000",
+            shadowColor: "#red",
             shadowOpacity: 0.8,
             shadowRadius: 3, 
-            backgroundColor: "#1E1E1E",
+              backgroundColor: "#D9D9D9",
             borderBottomLeftRadius: 15,
             borderBottomRightRadius: 15,
         },
@@ -50,7 +47,18 @@ export default function HomeScreen({ navigation }) {
       side={"bottom"}
       content={
         <View style={styles.drawerOpen}>
-          <Text style={styles.addText}>Can we see this?</Text>
+            <Text style={styles.addText}>Add to Ride</Text>
+            <ScrollView horizontal="true">
+                  <Text style={fontSize= 42}>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                      minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                      aliquip ex ea commodo consequat. Duis aute irure dolor in
+                      reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                      culpa qui officia deserunt mollit anim id est laborum.
+                  </Text>
+            </ScrollView>
         </View>
       }
     >
@@ -118,9 +126,9 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width,
     // height: Dimensions.get('window').height,
-    height: 600,
-    borderTopColor: "#2F6424",
-    borderTopWidth: 10,
+    height: 725,
+    borderBottomColor: "#2F6424",
+    borderBottomWidth: 10,
   },
   topNav: {
     marginTop: 40,
@@ -166,7 +174,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
-    bottom: 50,
+    bottom: 75,
     left: Dimensions.get("window").width / 2 - 37,
   },
   goText: {
@@ -174,16 +182,19 @@ const styles = StyleSheet.create({
   },
   addText: {
     fontWeight: "bold",
-    fontSize: 14,
-    alignItems: "flex-start",
-    justifyContent: "center",
-    color: "white",
-    position: "relative",
+    fontSize: 20,
+    alignSelf: "left",
+    color: "black",
+    marginTop: 10,
+    marginLeft: 10,
   },
   drawerOpen: {
     color: "#2F6424",
     justifyContent: "center",
     alignItems: "center", 
     marginBottom: 400,
-  }
+  },
+  drawerUp: {
+    paddingBottom: 15,
+  },
 });
