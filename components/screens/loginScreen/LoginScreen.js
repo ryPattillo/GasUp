@@ -15,27 +15,58 @@ import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
 import { useAuth } from "../../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import axios from "axios";
 
 const Separator = () => <View style={styles.separator} />;
 
 export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const { signup, login } = useAuth();
 
   async function loginUser() {
+    setLoading(true);
     try {
       if (email === "") {
-        Alert.alert("Enter a email!");
+        Alert.alert("Enter a email");
+        return setLoading(false);
       } else if (password === "") {
-        Alert.alert("Enter a passoword!");
+        Alert.alert("Enter a password");
+        return setLoading(false);
       } else {
         const result = await login(email, password);
+        const data = {
+          loggedIn: "true",
+        };
+        // const apiResult = await axios.post(
+        //   "https://gasup-362104.uc.r.appspot.com/api/signUp",
+        //   data
+        // );
+        setLoading(false);
+        // console.log(apiResult);
+        navigation.navigate("Home");
       }
     } catch (error) {
       console.log(error);
+      Alert.alert(error);
+      setLoading(false);
     }
   }
+
+  // async function loginUser() {
+  //   try {
+  //     if (email === "") {
+  //       Alert.alert("Enter a email!");
+  //     } else if (password === "") {
+  //       Alert.alert("Enter a passoword!");
+  //     } else {
+  //       const result = await login(email, password);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <KeyboardAwareScrollView
