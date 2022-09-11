@@ -86,7 +86,11 @@ export default function SearchScreen({ navigation }) {
         <View style={styles.userList}>
           {results &&
             results.map((e) => {
-              JSON.stringify(e);
+              return (
+                <View style={{ height: 40, fontSize: 40 }}>
+                  <Text>{e.email}</Text>
+                </View>
+              );
             })}
         </View>
       </KeyboardAwareScrollView>
