@@ -18,6 +18,7 @@ import { HStack, VStack } from "react-native-flex-layout";
 import { useAuth } from "../contexts/AuthContext";
 import Drawer from "react-native-drawer";
 import { useGPS } from "../contexts/LocationContext";
+import axios from "axios";
 
 export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
@@ -39,6 +40,9 @@ export default function HomeScreen({ navigation }) {
       } else {
         console.log("could not clear observer");
       }
+      await axios.post("https://gasup-362104.uc.r.appspot.com/api/endDrive", {
+        session_id: currentUser.email,
+      });
     } catch (error) {}
   }
 
@@ -70,7 +74,7 @@ export default function HomeScreen({ navigation }) {
       console.log(error);
     }
   }
-  
+
   useEffect(() => {
     // Redirects user if not logged in.
     if (!currentUser) {
@@ -123,21 +127,20 @@ export default function HomeScreen({ navigation }) {
       content={
         <View style={styles.drawerOpen}>
           <Text style={styles.addText}>Recommended Riders</Text>
-          <ScrollView 
-              showsHorizontalScrollIndicator={true} 
-              // showsHorizontalScrollIndicator={true}
-              persistentScrollbar={true} 
-              horizontal="true" 
-              style={styles.scrollWindow}>
+          <ScrollView
+            showsHorizontalScrollIndicator={true}
+            // showsHorizontalScrollIndicator={true}
+            persistentScrollbar={true}
+            horizontal="true"
+            style={styles.scrollWindow}
+          >
             <HStack>
-
               <VStack>
                 <TouchableOpacity style={styles.friendsButton}>
                   <Text style={styles.logoLetter}>L</Text>
                 </TouchableOpacity>
                 <Text style={styles.names}>Luis</Text>
               </VStack>
-
 
               <VStack>
                 <TouchableOpacity style={styles.friendsButton}>
@@ -155,19 +158,18 @@ export default function HomeScreen({ navigation }) {
 
               <VStack>
                 <TouchableOpacity style={styles.addButton}>
-                  <Ionicons 
+                  <Ionicons
                     onPress={() => {
                       console.log("search");
                       navigation.navigate("Search");
                     }}
                     name="add-outline"
-                    size={32} 
-                    style={styles.addIcon} 
+                    size={32}
+                    style={styles.addIcon}
                   />
                 </TouchableOpacity>
                 <Text style={styles.names}>Add new</Text>
               </VStack>
-
             </HStack>
           </ScrollView>
 
@@ -175,7 +177,6 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.addText}>Current Riders</Text>
           </View>
         </View>
-        
       }
     >
       <View style={styles.mainContainer}>
@@ -193,9 +194,9 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.modalText}>Ride invite from </Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => {
-                    axios.post(
-                      "https://gasup-362104.uc.r.appspot.com/api/handleInvite",
+                  onPress={async () => {
+                    await axios.post(
+                      "https://gasup-362104.uc.r.appspot.com/api/acceptInvite",
                       {
                         email: currentUser.email,
                       }
@@ -222,7 +223,6 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.textStyle}>Show Modal</Text>
           </Pressable>
         </View>
-
         {/* Top Nav */}
         <View style={styles.topNav}>
           <HStack>
@@ -255,6 +255,7 @@ export default function HomeScreen({ navigation }) {
             style={styles.map}
           />
         </View>
+
         {!drawerBottomOpen && (
           <TouchableOpacity
             style={inSession ? styles.stopButton : styles.goButton}
@@ -329,6 +330,14 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
     marginLeft: 78,
+  },
+  infoBox: {
+    color: "#2F6424",
+    justifyContent: "right",
+    width: 50,
+    height: 50,
+    position: "absolute",
+    marginLeft: 100,
   },
   iconLeft: {
     color: "#2F6424",
