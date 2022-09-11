@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
-  Card,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Input from "../../Input";
@@ -25,14 +24,19 @@ export default function ProfileScreen({ navigation }) {
     { driver: "luis mata", cost: 12.54 },
     { driver: "Jason Lam", cost: 12.54 },
     { driver: "Ryan P", cost: 12.54 },
+    { driver: "Ryan P", cost: 12.54 },
+    { driver: "Ryan P", cost: 12.54 },
+    { driver: "Ryan P", cost: 12.54 },
+    { driver: "Ryan P", cost: 12.54 },
   ]);
+  const userName = [];
   useEffect(() => {
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getTransaction", {
         userid: currentUser.email,
       })
       .then((res) => {
-        console.log(res);
+        userName = console.log(res);
       })
       .catch((error) => {
         console.log(error);
@@ -42,7 +46,7 @@ export default function ProfileScreen({ navigation }) {
   }, []);
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
       <View style={styles.mainContainer}>
         <View style={styles.topNav}>
           <HStack>
@@ -118,9 +122,9 @@ export default function ProfileScreen({ navigation }) {
         {transaction &&
           transaction.map((element) => {
             return (
-              <View>
-                <Text>{element.driver}</Text>
-                <Text>{element.cost}</Text>
+              <View style={styles.item}>
+                <Text style={styles.itemContent}>Driver: {element.driver}</Text>
+                <Text style={styles.itemContent}>Cost: {element.cost}</Text>
               </View>
             );
           })}
@@ -180,6 +184,7 @@ const styles = StyleSheet.create({
     fontSize: 45,
     // flexDirection: 'row',
     color: "#2F6424",
+    fontWeight: "bold",
     // position: "absolute",
   },
   iconRight: {
@@ -222,7 +227,7 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
   },
   scrollView: {
-    marginHorizontal: 10,
+    marginHorizontal: 0,
   },
   text: {
     fontSize: 42,
@@ -238,5 +243,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 25,
     color: "black",
+  },
+  item: {
+    backgroundColor: "lightgrey",
+    borderColor: "black",
+    borderStyle: "solid",
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    width: 350,
+  },
+  itemContent: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
