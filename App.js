@@ -15,7 +15,9 @@ import ProfileScreen from "./components/screens/profileScreen/ProfileScreen";
 import { GPSProvider } from "./components/contexts/LocationContext";
 import AddCarScreen from "./components/screens/addCarScreen/AddCarScreen";
 import SearchScreen from "./components/screens/searchScreen/SearchScreen";
+import { LogBox } from "react-native";
 const Stack = createNativeStackNavigator();
+LogBox.ignoreAllLogs(true);
 
 export default function App() {
   return (
