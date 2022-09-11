@@ -164,7 +164,7 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => {
                   console.log("set");
 
-                  setDrawerRightOpen(drawerRightOpen ? false : true);
+                  navigation.navigate("Profile");
                 }}
                 style={styles.iconRight}
               />
