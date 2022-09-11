@@ -106,6 +106,12 @@ module.exports = {
               transactions: transactions,
               balance: balance + cost,
             });
+
+          await admin
+            .firestore()
+            .collection("sessions")
+            .doc(session_id)
+            .delete();
         }
         res.status(200).json({ info: "working2!" });
       } else {
