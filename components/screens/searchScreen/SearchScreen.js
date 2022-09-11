@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
     },
     userList: {
         backgroundColor: "red",
-        width
     },
     userBox: {
         backgroundColor: "green",
