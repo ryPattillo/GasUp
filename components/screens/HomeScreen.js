@@ -99,7 +99,7 @@ export default function HomeScreen({ navigation }) {
           shadowColor: "#red",
           shadowOpacity: 0.8,
           shadowRadius: 3,
-          backgroundColor: "#D9D9D9",
+          backgroundColor: "#727272",
           borderBottomLeftRadius: 15,
           borderBottomRightRadius: 15,
         },
@@ -112,16 +112,15 @@ export default function HomeScreen({ navigation }) {
       content={
         <View style={styles.drawerOpen}>
           <Text style={styles.addText}>Add to Ride</Text>
-          <ScrollView horizontal="true">
-            <Text style={(fontSize = 42)}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </Text>
+          <ScrollView horizontal="true" style={styles.scrollWindow}>
+            <HStack>
+                <TouchableOpacity style={styles.friendsButton}></TouchableOpacity>
+                <TouchableOpacity style={styles.friendsButton}></TouchableOpacity>
+                <TouchableOpacity style={styles.friendsButton}></TouchableOpacity> 
+                <TouchableOpacity style={styles.addButton}>
+                    <Ionicons name="add-outline" style={styles.addIcon}/>
+                </TouchableOpacity> 
+            </HStack>
           </ScrollView>
         </View>
       }
@@ -212,7 +211,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 10,
   },
   topNav: {
-    marginTop: 40,
+    marginTopd: 40,
     borderBottomWidth: 2,
     borderBottomColor: "#2F6424",
   },
@@ -222,6 +221,7 @@ const styles = StyleSheet.create({
     fontSize: 45,
     // flexDirection: 'row',
     color: "#2F6424",
+    fontWeight: "bold",
     // position: "absolute",
   },
   iconRight: {
@@ -271,6 +271,8 @@ const styles = StyleSheet.create({
   },
   goText: {
     color: "white",
+    fontWeight: "bold",
+    fontSize: 25,
   },
   addText: {
     fontWeight: "bold",
@@ -279,6 +281,7 @@ const styles = StyleSheet.create({
     color: "black",
     marginTop: 10,
     marginLeft: 10,
+    paddingBottom: 5,
   },
   drawerOpen: {
     color: "#2F6424",
@@ -288,5 +291,42 @@ const styles = StyleSheet.create({
   },
   drawerUp: {
     paddingBottom: 15,
+  },
+  friendsButton: {
+    height: 80,
+    width: 80,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: "center",
+    borderRadius: 50,
+    backgroundColor: "#78B293",
+  },
+  scrollWindow: { 
+    width: Dimensions.get("window").width,
+    height: 250,
+    backgroundColor: "#5F5F5F",
+  },
+  addButton: {
+    height: 80,
+    width: 80,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginTop: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: "center",
+    borderRadius: 50,
+    backgroundColor: "#828282", 
+  },
+  addIcon: {
+    color: "#2F6424",
+    width: 30,
+    height: 30,
+    justifyContent: "center",
+    alignContent: "center",
+    alignSelf: "center",
   },
 });
