@@ -19,6 +19,7 @@ import { HStack, VStack } from "react-native-flex-layout";
 import { useAuth } from "../contexts/AuthContext";
 import Drawer from "react-native-drawer";
 import { useGPS } from "../contexts/LocationContext";
+import axios from "axios";
 
 export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
@@ -40,6 +41,9 @@ export default function HomeScreen({ navigation }) {
       } else {
         console.log("could not clear observer");
       }
+      await axios.post("https://gasup-362104.uc.r.appspot.com/api/endDrive", {
+        session_id: currentUser.email,
+      });
     } catch (error) {}
   }
 
@@ -71,7 +75,7 @@ export default function HomeScreen({ navigation }) {
       console.log(error);
     }
   }
-  
+
   useEffect(() => {
     // Redirects user if not logged in.
     if (!currentUser) {
@@ -129,7 +133,6 @@ export default function HomeScreen({ navigation }) {
               horizontal="true" 
               style={styles.scrollWindow}>
             <HStack>
-
               <VStack>
                 <TouchableOpacity style={styles.friendsButton}>
                   <Text style={styles.logoLetter}>L</Text>
@@ -159,13 +162,12 @@ export default function HomeScreen({ navigation }) {
                   style={styles.addButton}>
                   <Ionicons                     
                     name="add-outline"
-                    size={32} 
-                    style={styles.addIcon} 
+                    size={32}
+                    style={styles.addIcon}
                   />
                 </TouchableOpacity>
                 <Text style={styles.names}>Add new</Text>
               </VStack>
-
             </HStack>
           </ScrollView>
                     
@@ -189,7 +191,6 @@ export default function HomeScreen({ navigation }) {
             </HStack>
           </ScrollView>
         </View>
-        
       }
     >
       <View style={styles.mainContainer}>
@@ -207,9 +208,9 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.modalText}>Ride invite from </Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => {
-                    axios.post(
-                      "https://gasup-362104.uc.r.appspot.com/api/handleInvite",
+                  onPress={async () => {
+                    await axios.post(
+                      "https://gasup-362104.uc.r.appspot.com/api/acceptInvite",
                       {
                         email: currentUser.email,
                       }
@@ -236,7 +237,6 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.textStyle}>Show Modal</Text>
           </Pressable>
         </View>
-
         {/* Top Nav */}
         <View style={styles.topNav}>
           <HStack>
@@ -345,6 +345,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     marginLeft: 78,
     marginTop: 5,
+  },
+  infoBox: {
+    color: "#2F6424",
+    justifyContent: "right",
+    width: 50,
+    height: 50,
+    position: "absolute",
+    marginLeft: 100,
   },
   iconLeft: {
     color: "#2F6424",

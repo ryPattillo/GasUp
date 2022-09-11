@@ -21,6 +21,8 @@ import { useAuth } from "../../contexts/AuthContext";
 export default function ProfileScreen({ navigation }) {
   const { currentUser } = useAuth();
   const [transaction, setTransaction] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { signup, logout } = useAuth();
   useEffect(() => {
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getTransaction", {
@@ -37,6 +39,27 @@ export default function ProfileScreen({ navigation }) {
 
     return () => {};
   }, []);
+
+  async function logoutUser() {
+    setLoading(true);
+    try {
+      const result = await logout();
+      const data = {
+        loggedIn: "false",
+      };
+      // const apiResult = await axios.post(
+      //   "https://gasup-362104.uc.r.appspot.com/api/signUp",
+      //   data
+      // );
+      setLoading(false);
+      // console.log(apiResult);
+      navigation.navigate("Login");
+    } catch (error) {
+      console.log(error);
+
+      setLoading(false);
+    }
+  }
 
   return (
     <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -62,7 +85,12 @@ export default function ProfileScreen({ navigation }) {
             />
 
             <TouchableOpacity>
-              <Ionicons size={32} style={styles.iconRight} />
+              <Ionicons
+                size={32}
+                style={styles.iconRight}
+                name="power"
+                onPress={logoutUser}
+              />
             </TouchableOpacity>
           </HStack>
         </View>
@@ -71,12 +99,15 @@ export default function ProfileScreen({ navigation }) {
           style={styles.avatar}
           icon={(props) => <Icon name="account" {...props} />}
         />
-        <Text style={styles.usersName}>{currentUser.email}</Text>
-        <Button
+        <Text style={styles.usersName}>
+          {currentUser ? currentUser.email : "No user loggedin"}
+        </Text>
+        {/* <Button
           style={styles.editButton}
           title="Edit"
           trailing={(props) => <Icon name="pencil" {...props} />}
-        />
+        /> */}
+
         <Text style={styles.balance}>$0.00</Text>
         <Text style={styles.balanceLabel}>Gasup balance</Text>
         <Divider
@@ -102,6 +133,7 @@ export default function ProfileScreen({ navigation }) {
             navigation.navigate("Garage");
           }}
         />
+
         <Divider
           style={{
             marginTop: 20,
@@ -142,9 +174,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#2F6424",
   },
   usersName: {
-    fontSize: 20,
+    fontSize: 25,
     marginLeft: 100,
     marginTop: -65,
+    fontWeight: "bold",
   },
   usersEmail: {
     fontSize: 15,
@@ -155,11 +188,12 @@ const styles = StyleSheet.create({
     padding: 0,
     width: 140,
     height: 30,
-    marginLeft: 100,
+    marginLeft: 130,
     marginTop: 5,
     justifyContent: "center",
     backgroundColor: "#2F6424",
   },
+  logOutButton: { marginTop: -30, marginBottom: 30, marginLeft: 300 },
   topNav: {
     marginTop: 40,
   },
@@ -199,7 +233,8 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     position: "absolute",
-    marginLeft: 78,
+    marginLeft: 65,
+    color: "red",
   },
   iconLeft: {
     color: "#2F6424",

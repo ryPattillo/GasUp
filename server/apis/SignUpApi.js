@@ -48,5 +48,23 @@ module.exports = {
         res.status(204).json({ info: "No Request Specified" });
       }
     });
+
+    app.post("/api/getFriends", async (req, res, next) => {
+      if (req && req.body) {
+        // Get the user and the friend email
+        let email = req.body["email"];
+        // Get the current list of friends
+        let friends_list = await admin
+          .firestore()
+          .collection("users")
+          .doc(`${email}`)
+          .get();
+        friends_list = friends_list.data()["friends"];
+
+        res.status(200).json(friends_list);
+      } else {
+        res.status(204).json({ info: "No Request Specified" });
+      }
+    });
   },
 };
