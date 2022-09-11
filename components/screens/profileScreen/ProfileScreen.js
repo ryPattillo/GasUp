@@ -21,6 +21,8 @@ import { useAuth } from "../../contexts/AuthContext";
 export default function ProfileScreen({ navigation }) {
   const { currentUser } = useAuth();
   const [transaction, setTransaction] = useState([]);
+  const [balance, setBalance] = useState(0);
+
   const [loading, setLoading] = useState(false);
   const { signup, logout } = useAuth();
 
@@ -32,6 +34,24 @@ export default function ProfileScreen({ navigation }) {
       .then((res) => {
         if (res) {
           setTransaction(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    axios
+      .post("https://gasup-362104.uc.r.appspot.com/api/getBalance", {
+        email: currentUser.email,
+      })
+      .then((res) => {
+        console.log(res.data.balance);
+        if (res) {
+          setBalance(res.data.balance);
         }
       })
       .catch((error) => {
@@ -108,7 +128,8 @@ export default function ProfileScreen({ navigation }) {
           title="Edit"
           trailing={(props) => <Icon name="pencil" {...props} />}
         /> */}
-        <Text style={styles.balance}>$0.00</Text>
+
+        <Text style={styles.balance}> ${balance ? balance : 0}</Text>
         <Text style={styles.balanceLabel}>Gasup balance</Text>
         <Divider
           style={{
