@@ -57,6 +57,7 @@ export default function HomeScreen({ navigation }) {
       }
       await axios.post("https://gasup-362104.uc.r.appspot.com/api/endDrive", {
         session_id: currentUser.email,
+        total_miles: totalDistance.current,
       });
     } catch (error) {}
   }

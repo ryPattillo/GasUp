@@ -83,7 +83,7 @@ module.exports = {
           });
 
         // Iterate through each rider in the session and add the new transaction to their account
-        for (i = 0; i < riders.length - 1; i++) {
+        for (i = 0; i < riders.length; i++) {
           console.log("rider" + riders[i]);
           let rider = await admin
             .firestore()
