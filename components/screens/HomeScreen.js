@@ -83,23 +83,7 @@ export default function HomeScreen({ navigation }) {
     if (!currentUser) {
       navigation.navigate("Login");
     }
-
-    console.log(currentUser.uid);
-    inviteListener.current = firestore
-      .collection("invites")
-      .where(firebase.firestore.FieldPath.documentId(), "==", currentUser.uid)
-      .onSnapshot((docSnapshot) => {
-        docSnapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            console.log("added a doc. SOMEONE INVITED ME ! ");
-          } else {
-            console.log("something else");
-          }
-        });
-      });
-
     return () => {
-      inviteListener.current();
       handleStop();
     };
   }, []);
@@ -130,9 +114,18 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.addText}>Add to Ride</Text>
           <ScrollView horizontal="true" style={styles.scrollWindow}>
             <HStack>
-                <TouchableOpacity style={styles.friendsButton}></TouchableOpacity>
-                <TouchableOpacity style={styles.friendsButton}></TouchableOpacity>
-                <TouchableOpacity style={styles.friendsButton}></TouchableOpacity> 
+                <TouchableOpacity style={styles.friendsButton}>
+                    <Text>J</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.friendsButton}>
+                    <Text>J</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.friendsButton}>
+                    <Text>J</Text>
+                </TouchableOpacity> 
+
                 <TouchableOpacity style={styles.addButton}>
                     <Ionicons name="add-outline" style={styles.addIcon}/>
                 </TouchableOpacity> 
@@ -160,11 +153,6 @@ export default function HomeScreen({ navigation }) {
               <Ionicons
                 name="person-circle"
                 size={32}
-                onPress={() => {
-                  console.log("set");
-
-                  navigation.navigate("Profile");
-                }}
                 style={styles.iconRight}
               />
             </TouchableOpacity>
@@ -227,12 +215,12 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width,
     // height: Dimensions.get('window').height,
-    height: 725,
+    height: 715,
     borderBottomColor: "#2F6424",
     borderBottomWidth: 10,
   },
   topNav: {
-    marginTopd: 40,
+    marginTop: 40,
     borderBottomWidth: 2,
     borderBottomColor: "#2F6424",
   },
@@ -302,7 +290,7 @@ const styles = StyleSheet.create({
     color: "black",
     marginTop: 10,
     marginLeft: 10,
-    paddingBottom: 5,
+    // paddingBottom: 5,
   },
   drawerOpen: {
     color: "#2F6424",
