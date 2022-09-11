@@ -65,17 +65,17 @@ app.use((req, res, next) => {
   next();
 });
 
-const testAPIs = require("./apis/testapis.js");
-const driveAPIs = require("./apis/driveapis.js");
-const carAPIs = require("./apis/carapis.js");
-const routeAPIs = require("./apis/routeapis.js");
-const signupAPIs = require("./apis/signupapis.js");
+const driveAPIs = require("./apis/SessionApi.js");
+const carAPIs = require("./apis/CarApi.js");
+const routeAPIs = require("./apis/RouteApi.js");
+const signupAPIs = require("./apis/SignUpApi.js");
+const profileAPIs = require("./apis/ProfileApi.js");
 
-testAPIs.apis(app, admin);
 driveAPIs.apis(app, admin);
 carAPIs.apis(app, admin);
 routeAPIs.apis(app, admin);
 signupAPIs.apis(app, admin);
+profileAPIs.apis(app, admin);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

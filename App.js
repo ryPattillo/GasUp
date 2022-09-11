@@ -21,33 +21,35 @@ export default function App() {
     // <ProfileScreen></ProfileScreen>
     <NavigationContainer>
       <AuthProvider>
-        <Stack.Navigator>
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="Register"
-            component={RegistrationScreen}
-          />
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Garage"
-            component={AddCarScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
+        <GPSProvider>
+          <Stack.Navigator>
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Register"
+              component={RegistrationScreen}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Garage"
+              component={AddCarScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </GPSProvider>
       </AuthProvider>
     </NavigationContainer>
   );

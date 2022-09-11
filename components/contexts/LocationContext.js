@@ -19,6 +19,7 @@ export function GPSProvider({ children }) {
   useEffect(() => {
     setInterval(async () => {
       let location = await Location.getCurrentPositionAsync({});
+      setGPSLocation(location);
       setCoordinateList(
         coordinateList.push({
           lat: location["coords"]["latitude"],
