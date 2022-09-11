@@ -25,6 +25,7 @@ export default function ProfileScreen({ navigation }) {
 
   const [loading, setLoading] = useState(false);
   const { signup, logout } = useAuth();
+
   useEffect(() => {
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getTransaction", {
@@ -128,7 +129,7 @@ export default function ProfileScreen({ navigation }) {
           trailing={(props) => <Icon name="pencil" {...props} />}
         /> */}
 
-        <Text style={styles.balance}> {balance ? balance : 0}</Text>
+        <Text style={styles.balance}> ${balance ? balance : 0}</Text>
         <Text style={styles.balanceLabel}>Gasup balance</Text>
         <Divider
           style={{
@@ -153,7 +154,6 @@ export default function ProfileScreen({ navigation }) {
             navigation.navigate("Garage");
           }}
         />
-
         <Divider
           style={{
             marginTop: 20,

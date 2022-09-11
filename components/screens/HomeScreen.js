@@ -189,26 +189,22 @@ export default function HomeScreen({ navigation }) {
             style={styles.scrollWindow}
           >
             <HStack>
-              <VStack>
-                <TouchableOpacity style={styles.friendsButton}>
-                  <Text style={styles.logoLetter}>L</Text>
-                </TouchableOpacity>
-                <Text style={styles.names}>Luis</Text>
-              </VStack>
-
-              <VStack>
-                <TouchableOpacity style={styles.friendsButton}>
-                  <Text style={styles.logoLetter}>T</Text>
-                </TouchableOpacity>
-                <Text style={styles.names}>Tim</Text>
-              </VStack>
-
-              <VStack>
-                <TouchableOpacity style={styles.friendsButton}>
-                  <Text style={styles.logoLetter}>R</Text>
-                </TouchableOpacity>
-                <Text style={styles.names}>Ryan</Text>
-              </VStack>
+              {friends &&
+                friends.map((friend) => {
+                  return (
+                    <VStack>
+                      <TouchableOpacity
+                        style={styles.friendsButton}
+                        onPress={() => {}}
+                      >
+                        <Text style={styles.logoLetter}>
+                          {friend.name ? friend.name.charAt(0) : "Error"}
+                        </Text>
+                      </TouchableOpacity>
+                      <Text style={styles.names}>{friend.name}</Text>
+                    </VStack>
+                  );
+                })}
 
               <VStack>
                 <TouchableOpacity

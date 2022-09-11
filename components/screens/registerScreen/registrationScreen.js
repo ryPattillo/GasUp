@@ -30,6 +30,7 @@ export default function RegistrationScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const { signup, logout } = useAuth();
+  const [loginError, setLoginError] = useState();
 
   async function registerUser() {
     setLoading(true);
@@ -60,8 +61,13 @@ export default function RegistrationScreen({ navigation }) {
       }
     } catch (error) {
       console.log(error);
+      setLoginError(error);
       setLoading(false);
     }
+
+    // if (loginError) {
+    //   Alert.alert(loginError);
+    // }
   }
 
   return (
@@ -85,6 +91,11 @@ export default function RegistrationScreen({ navigation }) {
         </HStack>
 
         <Text style={styles.title}>Create an Account</Text>
+        {loginError && (
+          <Text style={{ color: "red", marginLeft: 15 }}>
+            {JSON.stringify(loginError.message)}
+          </Text>
+        )}
         <Input
           placeholder={"First Name"}
           value={firstname}
@@ -110,7 +121,7 @@ export default function RegistrationScreen({ navigation }) {
           title="SIGN UP"
           onPress={registerUser}
         ></Button>
-        <Button
+        {/* <Button
           disabled={loading}
           variant="contained"
           color="#2F6424"
@@ -119,7 +130,7 @@ export default function RegistrationScreen({ navigation }) {
           onPress={() => {
             navigation.navigate("Home");
           }}
-        ></Button>
+        ></Button> */}
         <Separator />
         <Text
           style={styles.text}

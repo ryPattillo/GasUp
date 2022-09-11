@@ -11,8 +11,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { HStack, VStack } from "react-native-flex-layout";
 import Input from "../../Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default function SearchScreen({ navigation }) {
+  const [search, setSearch] = useState("");
+  const firestore = firebase.firestore();
+  const [results, setResults] = useState([]);
   // async function searchUser() {
   //     setLoading(true);
   //     try {
@@ -54,72 +59,100 @@ export default function SearchScreen({ navigation }) {
         keyboardShouldPersistTaps="never"
         scrollEnabled={true}
       >
-        <Input placeholder={"Search for a name..."}></Input>
+        <Input
+          placeholder={"Search for a name..."}
+          value={search}
+          setValue={setSearch}
+          onSubmitEditing={async () => {
+            console.log("submitted");
+            firestore
+              .collection("users")
+              .where("email", ">=", search.toLowerCase())
+              .where("email", "<=", search.toLowerCase() + "\uf8ff")
+              .get()
+              .then((querySnapshot) => {
+                let results_ = [];
+                querySnapshot.forEach((doc) => {
+                  results_.push(doc.data());
+                });
+                console.log(results_);
+                setResults(results_);
+              })
+              .catch((error) => {
+                console.log("Error getting documents: ", error);
+              });
+          }}
+        ></Input>
+        <View style={styles.userList}>
+          {results &&
+            results.map((e) => {
+              return (
+                <View style={{ height: 40, fontSize: 40 }}>
+                  <Text>{e.email}</Text>
+                </View>
+              );
+            })}
+        </View>
       </KeyboardAwareScrollView>
-      <View style={styles.userList}>
-        <View style={styles.userBox}></View>
-      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        alignItems: "center",
-        backgroundColor: "white",
-        height: "100%",
-        borderBottomColor: "#2F6424",
-    },
-    backIcon: {
-        color: "black",
-        height: 30,
-        width: 30,
-        // marginRight: 1,
-    },
-    topNav: {
-        marginTop: 40,
-        borderBottomWidth: 2,
-        borderBottomColor: "#2F6424",
-    },
-    Logo: {
-        width: 30,
-        height: 30,
-        flexDirection: "row",
-        marginRight: 45,
-        float: "left",
-        marginTop: 8,
-    },
-    logoText: {
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: 45,
-        // flexDirection: 'row',
-        color: "#2F6424",
-        fontWeight: "bold",
-        // position: "absolute",
-        marginLeft: 70,
-    },
-    iconRight: {
-        color: "#2F6424",
-        justifyContent: "right",
-        width: 30,
-        height: 30,
-        position: "absolute",
-        marginLeft: 78,
-    },
-    iconLeft: {
-        color: "#2F6424",
-        justifyContent: "left",
-        alignItems: "flex-start",
-        width: 30,
-        height: 30,
-        marginLeft: -50,
-        marginTop: 5,
-    },
-    userList: {
-        backgroundColor: "red",
-    },
-    userBox: {
-        backgroundColor: "green",
-    },
-})
+  mainContainer: {
+    alignItems: "center",
+    backgroundColor: "white",
+    height: "100%",
+    borderBottomColor: "#2F6424",
+  },
+  backIcon: {
+    color: "black",
+    height: 30,
+    width: 30,
+    // marginRight: 1,
+  },
+  topNav: {
+    marginTop: 40,
+    borderBottomWidth: 2,
+    borderBottomColor: "#2F6424",
+  },
+  Logo: {
+    width: 30,
+    height: 30,
+    flexDirection: "row",
+    marginRight: 45,
+    float: "left",
+    marginTop: 8,
+  },
+  logoText: {
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 45,
+    // flexDirection: 'row',
+    color: "#2F6424",
+    fontWeight: "bold",
+    // position: "absolute",
+    marginLeft: 70,
+  },
+  iconRight: {
+    color: "#2F6424",
+    justifyContent: "right",
+    width: 30,
+    height: 30,
+    position: "absolute",
+    marginLeft: 78,
+  },
+  iconLeft: {
+    color: "#2F6424",
+    justifyContent: "left",
+    alignItems: "flex-start",
+    width: 30,
+    height: 30,
+    marginLeft: -50,
+    marginTop: 5,
+  },
+  userList: {},
+  userBox: {
+    backgroundColor: "green",
+  },
+});
