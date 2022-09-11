@@ -38,12 +38,11 @@ export function GPSProvider({ children }) {
       );
       if (coordinateList.length % 20 == 0) {
         try {
-          console.log(coordinates);
+          //console.log(coordinates);
           //   const apiResult = await axios.post(
           //     "https://gasup-362104.uc.r.appspot.com/api/mapBox",
           //     coordinates
           //   );
-
           //   console.log(apiResult.data["miles"]);
         } catch (error) {
           console.log("Error: " + error);

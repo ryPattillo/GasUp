@@ -25,11 +25,10 @@ export default function ProfileScreen({ navigation }) {
   useEffect(() => {
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getTransaction", {
-        userid: currentUser.email,
+        email: currentUser.email,
       })
       .then((res) => {
         if (res) {
-          console.log(res.data);
           setTransaction(res.data);
         }
       })
@@ -117,9 +116,9 @@ export default function ProfileScreen({ navigation }) {
         {transaction &&
           transaction.map((element) => {
             return (
-              <View style={styles.transaction}>
-                <Text style={{ alignSelf: "left" }}>{element.driver}</Text>
-                <Text>{element.cost}</Text>
+              <View style={styles.item}>
+                <Text style={styles.itemContent}>Driver: {element.driver}</Text>
+                <Text style={styles.itemContent}>Cost: {element.cost}</Text>
               </View>
             );
           })}
@@ -165,9 +164,18 @@ const styles = StyleSheet.create({
   topNav: {
     marginTop: 40,
   },
-  transaction: {
-    textAlign: "left",
-    paddingBottom: 20,
+  item: {
+    backgroundColor: "lightgrey",
+    borderColor: "black",
+    borderStyle: "solid",
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    width: 350,
+  },
+  itemContent: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
   Logo: {
     width: 30,
