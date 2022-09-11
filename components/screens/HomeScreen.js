@@ -83,7 +83,22 @@ export default function HomeScreen({ navigation }) {
     if (!currentUser) {
       navigation.navigate("Login");
     }
+    console.log(currentUser.uid);
+    inviteListener.current = firestore
+      .collection("invites")
+      .where(firebase.firestore.FieldPath.documentId(), "==", currentUser.uid)
+      .onSnapshot((docSnapshot) => {
+        docSnapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            console.log("added a doc. SOMEONE INVITED ME ! ");
+          } else {
+            console.log("something else");
+          }
+        });
+      });
+
     return () => {
+      inviteListener.current();
       handleStop();
     };
   }, []);
@@ -114,21 +129,21 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.addText}>Add to Ride</Text>
           <ScrollView horizontal="true" style={styles.scrollWindow}>
             <HStack>
-                <TouchableOpacity style={styles.friendsButton}>
-                    <Text>J</Text>
-                </TouchableOpacity>
+              <TouchableOpacity style={styles.friendsButton}>
+                <Text>J</Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity style={styles.friendsButton}>
-                    <Text>J</Text>
-                </TouchableOpacity>
+              <TouchableOpacity style={styles.friendsButton}>
+                <Text>J</Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity style={styles.friendsButton}>
-                    <Text>J</Text>
-                </TouchableOpacity> 
+              <TouchableOpacity style={styles.friendsButton}>
+                <Text>J</Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity style={styles.addButton}>
-                    <Ionicons name="add-outline" style={styles.addIcon}/>
-                </TouchableOpacity> 
+              <TouchableOpacity style={styles.addButton}>
+                <Ionicons name="add-outline" style={styles.addIcon} />
+              </TouchableOpacity>
             </HStack>
           </ScrollView>
         </View>
@@ -151,6 +166,11 @@ export default function HomeScreen({ navigation }) {
 
             <TouchableOpacity>
               <Ionicons
+                onPress={() => {
+                  console.log("set");
+
+                  navigation.navigate("Profile");
+                }}
                 name="person-circle"
                 size={32}
                 style={styles.iconRight}
@@ -313,7 +333,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "#78B293",
   },
-  scrollWindow: { 
+  scrollWindow: {
     width: Dimensions.get("window").width,
     height: 250,
     backgroundColor: "#5F5F5F",
@@ -328,7 +348,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
     justifyContent: "center",
     borderRadius: 50,
-    backgroundColor: "#828282", 
+    backgroundColor: "#828282",
   },
   addIcon: {
     color: "#2F6424",
