@@ -49,7 +49,7 @@ export default function LoginScreen({ navigation }) {
       }
     } catch (error) {
       console.log(error);
-      Alert.alert(error);
+      // Alert.alert(error);
       setLoading(false);
     }
   }
