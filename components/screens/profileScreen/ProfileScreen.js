@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
   logOutButton: { marginTop: -30, marginBottom: 30, marginLeft: 300 },
   topNav: {
     marginTop: 40,
+    borderBottomColor: "#2F6424",
   },
   item: {
     backgroundColor: "lightgrey",
@@ -210,12 +211,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   Logo: {
-    width: 30,
-    height: 30,
+    width: 35,
+    height: 35,
     flexDirection: "row",
     marginRight: 45,
     float: "left",
-    marginTop: 8,
+    marginTop: 2,
   },
   logoText: {
     alignItems: "center",
