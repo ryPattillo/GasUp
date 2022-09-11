@@ -47,5 +47,21 @@ module.exports = {
         res.status(205).json({ message: "Request Body Not Provided" });
       }
     });
+
+    app.post("/api/getBalance", async (req, res, next) => {
+      if (req && req.body) {
+        email = req.body["email"];
+
+        let doc = await admin
+          .firestore()
+          .collection("users")
+          .doc(`${email}`)
+          .get();
+
+        res.status(200).json({ balance: doc.data()["balance"] });
+      } else {
+        res.status(205).json({ message: "Request Body Not Provided" });
+      }
+    });
   },
 };
