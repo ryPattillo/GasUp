@@ -81,6 +81,19 @@ export default function HomeScreen({ navigation }) {
     if (!currentUser) {
       navigation.navigate("Login");
     }
+    axios
+      .post("https://gasup-362104.uc.r.appspot.com/api/getFriends", {
+        email: currentUser.email,
+      })
+      .then((res) => {
+        if (res && res.data) {
+          console.log(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     console.log(currentUser.email);
     inviteListener.current = firestore
       .collection("invites")
@@ -89,7 +102,7 @@ export default function HomeScreen({ navigation }) {
         docSnapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
             setModalVisible(true);
-            console.log(change);
+            console.log(change.type);
             console.log("added a doc. SOMEONE INVITED ME ! ");
           } else {
             console.log("something else");
@@ -128,10 +141,11 @@ export default function HomeScreen({ navigation }) {
       content={
         <View style={styles.drawerOpen}>
           <Text style={styles.addText}>Recommended Riders</Text>
-          <ScrollView 
-              persistentScrollbar={true} 
-              horizontal="true" 
-              style={styles.scrollWindow}>
+          <ScrollView
+            persistentScrollbar={true}
+            horizontal="true"
+            style={styles.scrollWindow}
+          >
             <HStack>
               <VStack>
                 <TouchableOpacity style={styles.friendsButton}>
@@ -155,12 +169,13 @@ export default function HomeScreen({ navigation }) {
               </VStack>
 
               <VStack>
-                <TouchableOpacity 
+                <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("Search");
-                  }} 
-                  style={styles.addButton}>
-                  <Ionicons                     
+                  }}
+                  style={styles.addButton}
+                >
+                  <Ionicons
                     name="add-outline"
                     size={32}
                     style={styles.addIcon}
@@ -170,24 +185,23 @@ export default function HomeScreen({ navigation }) {
               </VStack>
             </HStack>
           </ScrollView>
-                    
+
           <View style={styles.ridingBox}>
             <Text style={styles.currText}>Current Riders</Text>
           </View>
 
-          <ScrollView 
+          <ScrollView
             persistentScrollbar={true}
             horizontal="true"
-            style={styles.scrollWindow}>
+            style={styles.scrollWindow}
+          >
             <HStack>
-
               <VStack>
                 <TouchableOpacity style={styles.friendsButton}>
                   <Text style={styles.logoLetter}>J</Text>
                 </TouchableOpacity>
                 <Text style={styles.names}>Jason</Text>
               </VStack>
-
             </HStack>
           </ScrollView>
         </View>
@@ -223,19 +237,20 @@ export default function HomeScreen({ navigation }) {
 
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
+                  onPress={async () => {
+                    await firestore
+                      .collection("invites")
+                      .doc(currentUser.email)
+                      .delete();
+
+                    setModalVisible(!modalVisible);
+                  }}
                 >
                   <Text style={styles.textStyle}>Decline Invite</Text>
                 </Pressable>
               </View>
             </View>
           </Modal>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={styles.textStyle}>Show Modal</Text>
-          </Pressable>
         </View>
         {/* Top Nav */}
         <View style={styles.topNav}>
@@ -260,7 +275,6 @@ export default function HomeScreen({ navigation }) {
         </View>
         {/* Map View */}
         <View>
-
           <MapView
             showsUserLocation={inSession}
             followsUserLocation={inSession}
@@ -294,7 +308,6 @@ export default function HomeScreen({ navigation }) {
             style={styles.chevronDown}
           />
         </View>
-
       </View>
     </Drawer>
   );
@@ -319,7 +332,7 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width,
     // height: Dimensions.get('window').height,
-    height: 715,
+    height: 750,
     borderBottomColor: "#2F6424",
     borderBottomWidth: 10,
   },
@@ -412,7 +425,7 @@ const styles = StyleSheet.create({
     alignSelf: "left",
     color: "black",
     // marginTop: 10,
-    marginLeft: 10, 
+    marginLeft: 10,
   },
   drawerOpen: {
     color: "#2F6424",
