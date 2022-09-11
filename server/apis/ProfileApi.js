@@ -18,7 +18,7 @@ module.exports = {
         let doc = await admin
           .firestore()
           .collection("users")
-          .doc(`${user_id}`)
+          .doc(`${email}`)
           .get();
         // Get the user transaction list
         let transactions = doc.data()["transactions"];
