@@ -117,11 +117,8 @@ export default function HomeScreen({ navigation }) {
     }
   }
 
-  useEffect(() => {
-    // Redirects user if not logged in.
-    if (!currentUser) {
-      navigation.navigate("Login");
-    }
+  function getFriends() {
+    console.log("get friends.");
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getFriends", {
         email: currentUser.email,
@@ -135,6 +132,14 @@ export default function HomeScreen({ navigation }) {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  useEffect(() => {
+    // Redirects user if not logged in.
+    if (!currentUser) {
+      navigation.navigate("Login");
+    }
+    getFriends();
 
     console.log(currentUser.email);
     inviteListener.current = firestore
@@ -261,12 +266,32 @@ export default function HomeScreen({ navigation }) {
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={async () => {
-                    await axios.post(
+                    const res = await axios.post(
                       "https://gasup-362104.uc.r.appspot.com/api/acceptInvite",
                       {
                         email: currentUser.email,
                       }
                     );
+                    if (res && res.data) {
+                      console.log(res.data);
+                    }
+                    observer.current = firestore
+                      .collection("sessions")
+                      .where(
+                        firebase.firestore.FieldPath.documentId(),
+                        "==",
+                        res.data.session
+                      )
+                      .onSnapshot((docSnapshot) => {
+                        docSnapshot.docChanges().forEach((change) => {
+                          if (change.type === "removed") {
+                            // end of session
+                            handleStop();
+                          } else {
+                            console.log("something else");
+                          }
+                        });
+                      });
                     setInSession(true);
                     setModalVisible(!modalVisible);
                   }}
@@ -338,6 +363,7 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.drawerUp}>
           <Ionicons
             onPress={() => {
+              getFriends();
               setDrawerBottomOpen(drawerBottomOpen ? false : true);
             }}
             name={
