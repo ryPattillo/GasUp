@@ -36,10 +36,13 @@ export default function RegistrationScreen({ navigation }) {
     try {
       if (firstname === "") {
         Alert.alert("Enter a first name!");
+        return setLoading(false);
       } else if (lastname === "") {
         Alert.alert("Enter a last name!");
+        return setLoading(false);
       } else if (password === "") {
         Alert.alert("Enter a password");
+        return setLoading(false);
       } else {
         const result = await signup(email, password);
         const data = {
