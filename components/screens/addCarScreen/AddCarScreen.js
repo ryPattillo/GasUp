@@ -60,7 +60,7 @@ export default function AddCarScreen({ navigation }) {
                 make: make,
                 model: model,
                 year: year,
-                email: currentUser ? currentUser.email : "",
+                email: currentUser.email,
               })
               .then((res) => {
                 let re = res["data"];

@@ -102,7 +102,7 @@ export default function SearchScreen({ navigation }) {
                           "https://gasup-362104.uc.r.appspot.com/api/addFriend",
                           {
                             friend_email: e.email,
-                            user_email: currentUser ? currentUser.email : "",
+                            user_email: currentUser.email,
                           }
                         )
                         .then((res) => {
