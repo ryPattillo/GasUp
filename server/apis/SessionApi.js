@@ -44,28 +44,49 @@ module.exports = {
      */
     app.post("/api/endDrive", async (req, res, next) => {
       if (req && req.body) {
-        // Get a running session
+        // Get the running session
         let session_id = req.body["session_id"];
+        console.log(session_id);
+        // Get the driver account for gas mileadge
+        let driver_account = await admin
+          .firestore()
+          .collection("users")
+          .doc(session_id)
+          .get();
+
+        // get gas miledage
+        let mpg = driver_account.data()["car_data"]["avg_mpg"];
+        let driver_transactions = driver_account.data()["transactions"];
+        driver_transactions.push(session_id);
+
+        // Get the current dession data
         var session = await admin
           .firestore()
           .collection("sessions")
           .doc(session_id)
           .get();
 
-        // Get the riders, drivers, and cost for the session
+        // Get the riders, drivers
         let riders = session.data()["riders"];
         let driver = session.data()["driver"];
-        let cost = session.data()["cost"];
+        let cost = (req.body["total_miles"] / mpg) * 3.95;
 
         // Create a transaction reciept
         admin.firestore().collection("transactions").doc(session_id).set({
           driver: driver,
           riders: riders,
+          // Compute total cost based on mpg, miles , and estimated gas price
           cost: cost,
         });
 
+        await admin
+          .firestore()
+          .collection("users")
+          .doc(session_id)
+          .update({ transactions: driver_transactions });
+
         // Iterate through each rider in the session and add the new transaction to their account
-        for (i = 0; i < riders.length - 1; i++) {
+        for (i = 0; i < riders.length; i++) {
           console.log("rider" + riders[i]);
           let rider = await admin
             .firestore()
@@ -73,8 +94,41 @@ module.exports = {
             .doc(riders[i])
             .get();
 
-          // TODO: Add transaction
+          let transactions = rider.data()["transactions"];
+          let balance = rider.data()["balance"];
+          transactions.push(session_id);
+
+          await admin
+            .firestore()
+            .collection("users")
+            .doc(riders[i])
+            .update({
+              transactions: transactions,
+              balance: balance + cost,
+            });
         }
+        res.status(200).json({ info: "working2!" });
+      } else {
+        res.status(204).json({ info: "No session specified" });
+      }
+    });
+
+    /**
+     * Copy session data into transactions
+     */
+    app.post("/api/updateCost", async (req, res, next) => {
+      if (req && req.body) {
+        // Get a running session
+        let driver_email = req.body["session_id"];
+
+        // Create a transaction reciept
+        let driver = admin
+          .firestore()
+          .collection("users")
+          .doc(driver_email)
+          .get();
+
+        let mpg = driver.data()["car_data"];
 
         res.status(200).json({ info: "working2!" });
       } else {
