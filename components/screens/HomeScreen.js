@@ -12,7 +12,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import MapView from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
-import { Stack, HStack, VStack } from "react-native-flex-layout";
+import { HStack, VStack } from "react-native-flex-layout";
 import { useAuth } from "../contexts/AuthContext";
 import Drawer from "react-native-drawer";
 import { useGPS } from "../contexts/LocationContext";
@@ -39,6 +39,7 @@ export default function HomeScreen({ navigation }) {
       }
     } catch (error) {}
   }
+
   async function handleGo() {
     try {
       console.log(GPSLocation);
@@ -78,6 +79,7 @@ export default function HomeScreen({ navigation }) {
       console.log(error);
     }
   }
+  
   useEffect(() => {
     // Redirects user if not logged in.
     if (!currentUser) {
@@ -111,12 +113,12 @@ export default function HomeScreen({ navigation }) {
       }}
       styles={{
         drawer: {
-          shadowColor: "#red",
+          shadowColor: "white",
           shadowOpacity: 0.8,
           shadowRadius: 3,
           backgroundColor: "#727272",
-          borderBottomLeftRadius: 15,
-          borderBottomRightRadius: 15,
+          marginTop: 40,
+          flex: 1,
         },
         main: { paddingBottom: 3 },
       }}
@@ -126,27 +128,60 @@ export default function HomeScreen({ navigation }) {
       side={"bottom"}
       content={
         <View style={styles.drawerOpen}>
-          <Text style={styles.addText}>Add to Ride</Text>
-          <ScrollView horizontal="true" style={styles.scrollWindow}>
+          <Text style={styles.addText}>Recommended Riders</Text>
+          <ScrollView 
+              showsHorizontalScrollIndicator={true} 
+              // showsHorizontalScrollIndicator={true}
+              persistentScrollbar={true} 
+              horizontal="true" 
+              style={styles.scrollWindow}>
             <HStack>
-              <TouchableOpacity style={styles.friendsButton}>
-                <Text>J</Text>
-              </TouchableOpacity>
 
-              <TouchableOpacity style={styles.friendsButton}>
-                <Text>J</Text>
-              </TouchableOpacity>
+              <VStack>
+                <TouchableOpacity style={styles.friendsButton}>
+                  <Text style={styles.logoLetter}>L</Text>
+                </TouchableOpacity>
+                <Text style={styles.names}>Luis</Text>
+              </VStack>
 
-              <TouchableOpacity style={styles.friendsButton}>
-                <Text>J</Text>
-              </TouchableOpacity>
 
-              <TouchableOpacity style={styles.addButton}>
-                <Ionicons name="add-outline" style={styles.addIcon} />
-              </TouchableOpacity>
+              <VStack>
+                <TouchableOpacity style={styles.friendsButton}>
+                  <Text style={styles.logoLetter}>T</Text>
+                </TouchableOpacity>
+                <Text style={styles.names}>Tim</Text>
+              </VStack>
+
+              <VStack>
+                <TouchableOpacity style={styles.friendsButton}>
+                  <Text style={styles.logoLetter}>R</Text>
+                </TouchableOpacity>
+                <Text style={styles.names}>Ryan</Text>
+              </VStack>
+
+              <VStack>
+                <TouchableOpacity style={styles.addButton}>
+                  <Ionicons 
+                    onPress={() => {
+                      console.log("search");
+                      navigation.navigate("Search");
+                    }}
+                    name="add-outline"
+                    size={32} 
+                    style={styles.addIcon} 
+                  />
+                </TouchableOpacity>
+                <Text style={styles.names}>Add new</Text>
+              </VStack>
+
             </HStack>
           </ScrollView>
+
+          <View>
+            <Text style={styles.addText}>Current Riders</Text>
+          </View>
         </View>
+        
       }
     >
       <View style={styles.mainContainer}>
@@ -156,19 +191,15 @@ export default function HomeScreen({ navigation }) {
             <TouchableOpacity>
               <Ionicons name="menu-outline" size={32} style={styles.iconLeft} />
             </TouchableOpacity>
-
             <Text style={styles.logoText}>GasUp</Text>
-
             <Image
               style={styles.Logo}
               source={require("../../assets/images/dragonLogo.png")}
             />
-
             <TouchableOpacity>
               <Ionicons
                 onPress={() => {
                   console.log("set");
-
                   navigation.navigate("Profile");
                 }}
                 name="person-circle"
@@ -328,15 +359,16 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     marginTop: 15,
     marginLeft: 15,
-    marginRight: 15,
+    marginRight: 10,
     justifyContent: "center",
     borderRadius: 50,
     backgroundColor: "#78B293",
   },
   scrollWindow: {
-    width: Dimensions.get("window").width,
+    width: 650,
     height: 250,
     backgroundColor: "#5F5F5F",
+    width: Dimensions.get("window").width,
   },
   addButton: {
     height: 80,
@@ -357,5 +389,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignSelf: "center",
+    fontWeight: "extra-bold",
+  },
+  logoLetter: {
+    fontWeight: "extra-bold",
+    fontSize: 65,
+    color: "white",
+    marginLeft: 14,
+  },
+  names: {
+    color: "white",
+    fontSize: 20,
+    position: "relative",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginTop: 5,
+    fontWeight: "regular",
   },
 });

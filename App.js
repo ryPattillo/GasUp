@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProfileScreen from "./components/screens/profileScreen/ProfileScreen";
 import { GPSProvider } from "./components/contexts/LocationContext";
 import AddCarScreen from "./components/screens/addCarScreen/AddCarScreen";
+import SearchScreen from "./components/screens/searchScreen/SearchScreen";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -46,6 +47,11 @@ export default function App() {
             <Stack.Screen
               name="Garage"
               component={AddCarScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Search"
+              component={SearchScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
