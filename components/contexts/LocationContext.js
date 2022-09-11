@@ -30,11 +30,15 @@ export function GPSProvider({ children }) {
       if (coordinateList.length == 5) {
         console.log(coordinateList);
 
-        const apiResult = await axios.post(
-          "https://gasup-362104.uc.r.appspot.com/api/mapBox",
-          coordinateList
-        );
-        console.log(apiResult);
+        try {
+          const apiResult = await axios.post(
+            "https://gasup-362104.uc.r.appspot.com/api/mapBox",
+            coordinateList
+          );
+          console.log(apiResult);
+        } catch (error) {
+          console.log("Error: " + error);
+        }
       }
     }, 500);
 
