@@ -12,7 +12,17 @@ export function useGPS() {
 export function GPSProvider({ children }) {
   const [GPSLocation, setGPSLocation] = useState();
   const [coordinateList, setCoordinateList] = useState([]);
-  const [totalDistance, setTotalDistance] = useState(0);
+  const [totalDistance, setTotalDistance] = useState(0.0);
+
+  const coordinates = [
+    { lat: -117.17282, long: 32.71204 },
+    { lat: -117.17288, long: 32.71225 },
+    { lat: -117.17293, long: 32.71244 },
+    { lat: -117.17292, long: 32.71256 },
+    { lat: -117.17298, long: 32.712603 },
+    { lat: -117.17314, long: 32.71259 },
+    { lat: -117.17334, long: 32.71254 },
+  ];
 
   // This is done in useEffect so its done once only, not each render.
   // only when component is mounted.
@@ -26,16 +36,14 @@ export function GPSProvider({ children }) {
           long: location["coords"]["longitude"],
         })
       );
-
-      if (coordinateList.length == 5) {
-        console.log(coordinateList);
-
+      if (coordinateList.length % 20 == 0) {
         try {
-          const apiResult = await axios.post(
-            "https://gasup-362104.uc.r.appspot.com/api/mapBox",
-            coordinateList
-          );
-          console.log(apiResult);
+          //console.log(coordinates);
+          //   const apiResult = await axios.post(
+          //     "https://gasup-362104.uc.r.appspot.com/api/mapBox",
+          //     coordinates
+          //   );
+          //   console.log(apiResult.data["miles"]);
         } catch (error) {
           console.log("Error: " + error);
         }

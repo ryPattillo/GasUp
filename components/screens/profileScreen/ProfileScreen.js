@@ -6,26 +6,52 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
-  Card,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../../Input";
 import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
-import { useAuth } from "../../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Avatar, Divider } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function ProfileScreen({ navigation }) {
+  const { currentUser } = useAuth();
+  const [transaction, setTransaction] = useState([]);
+  useEffect(() => {
+    axios
+      .post("https://gasup-362104.uc.r.appspot.com/api/getTransaction", {
+        email: currentUser.email,
+      })
+      .then((res) => {
+        if (res) {
+          setTransaction(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return () => {};
+  }, []);
+
   return (
-    <ScrollView style={styles.scrollView}>
+    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
       <View style={styles.mainContainer}>
         <View style={styles.topNav}>
           <HStack>
             <TouchableOpacity>
-              <Ionicons name="menu-outline" size={32} style={styles.iconLeft} />
+              <Ionicons
+                name="arrow-back"
+                size={32}
+                style={styles.iconLeft}
+                onPress={() => {
+                  navigation.navigate("Home");
+                }}
+              />
             </TouchableOpacity>
 
             <Text style={styles.logoText}>GasUp</Text>
@@ -36,11 +62,7 @@ export default function ProfileScreen({ navigation }) {
             />
 
             <TouchableOpacity>
-              <Ionicons
-                name="person-circle"
-                size={32}
-                style={styles.iconRight}
-              />
+              <Ionicons size={32} style={styles.iconRight} />
             </TouchableOpacity>
           </HStack>
         </View>
@@ -49,7 +71,7 @@ export default function ProfileScreen({ navigation }) {
           style={styles.avatar}
           icon={(props) => <Icon name="account" {...props} />}
         />
-        <Text style={styles.usersName}>Firstname Lastname</Text>
+        <Text style={styles.usersName}>{currentUser.email}</Text>
         <Button
           style={styles.editButton}
           title="Edit"
@@ -90,6 +112,15 @@ export default function ProfileScreen({ navigation }) {
           leadingInset={0}
         />
         <Text style={styles.title}>Transaction History</Text>
+        {transaction &&
+          transaction.map((element) => {
+            return (
+              <View style={styles.item}>
+                <Text style={styles.itemContent}>Driver: {element.driver}</Text>
+                <Text style={styles.itemContent}>Cost: {element.cost}</Text>
+              </View>
+            );
+          })}
       </View>
     </ScrollView>
   );
@@ -132,6 +163,19 @@ const styles = StyleSheet.create({
   topNav: {
     marginTop: 40,
   },
+  item: {
+    backgroundColor: "lightgrey",
+    borderColor: "black",
+    borderStyle: "solid",
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    width: 350,
+  },
+  itemContent: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   Logo: {
     width: 30,
     height: 30,
@@ -146,6 +190,7 @@ const styles = StyleSheet.create({
     fontSize: 45,
     // flexDirection: 'row',
     color: "#2F6424",
+    fontWeight: "bold",
     // position: "absolute",
   },
   iconRight: {
@@ -188,7 +233,7 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
   },
   scrollView: {
-    marginHorizontal: 10,
+    marginHorizontal: 0,
   },
   text: {
     fontSize: 42,
@@ -204,5 +249,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 25,
     color: "black",
+  },
+  item: {
+    backgroundColor: "lightgrey",
+    borderColor: "black",
+    borderStyle: "solid",
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    width: 350,
+  },
+  itemContent: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });

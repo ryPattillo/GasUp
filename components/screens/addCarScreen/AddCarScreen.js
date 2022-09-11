@@ -15,6 +15,7 @@ import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
 import { useAuth } from "../../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import axios from "axios";
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -22,6 +23,7 @@ export default function AddCarScreen({ navigation }) {
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
+  const { currentUser } = useAuth();
 
   return (
     <KeyboardAwareScrollView
@@ -49,9 +51,38 @@ export default function AddCarScreen({ navigation }) {
 
         <Button
           variant="contained"
-          color="#2F6424"
+          color="black"
           style={styles.button}
           title="FINISH"
+          onPress={() => {
+            axios
+              .post("https://gasup-362104.uc.r.appspot.com/api/findCar", {
+                make: make,
+                model: model,
+                year: year,
+                email: currentUser.email,
+              })
+              .then((res) => {
+                let re = res["data"];
+                console.log(re);
+                axios.post("https://gasup-362104.uc.r.appspot.com/api/addCar", {
+                  re,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+            navigation.navigate("Profile");
+          }}
+        ></Button>
+        <Button
+          variant="contained"
+          color="#2F6424"
+          style={styles.button}
+          title="CANCEL"
+          onPress={() => {
+            navigation.navigate("Profile");
+          }}
         ></Button>
       </View>
     </KeyboardAwareScrollView>
