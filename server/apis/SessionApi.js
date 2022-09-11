@@ -135,5 +135,27 @@ module.exports = {
         res.status(204).json({ info: "No session specified" });
       }
     });
+
+    /**
+     * Copy session data into transactions
+     */
+    app.post("/api/inviteFriend", async (req, res, next) => {
+      if (req && req.body) {
+        // Get a running session
+        let friend_email = req.body["friend_email"];
+        let session_id = req.body["session"];
+
+        // Create a transaction reciept
+        let friend = admin
+          .firestore()
+          .collection("invites")
+          .doc(friend_email)
+          .set({ session: session_id });
+
+        res.status(200).json({ info: "Complte" });
+      } else {
+        res.status(204).json({ info: "No session specified" });
+      }
+    });
   },
 };

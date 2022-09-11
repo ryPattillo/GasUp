@@ -195,7 +195,17 @@ export default function HomeScreen({ navigation }) {
                     <VStack key={i}>
                       <TouchableOpacity
                         style={styles.friendsButton}
-                        onPress={() => {}}
+                        onPress={() => {
+                          {
+                            axios.post(
+                              "https://gasup-362104.uc.r.appspot.com/api/inviteFriend",
+                              {
+                                friend_email: friend.email,
+                                session: currentUser.email,
+                              }
+                            );
+                          }
+                        }}
                       >
                         <Text style={styles.logoLetter}>
                           {friend.name ? friend.name.charAt(0) : "Error"}
@@ -257,7 +267,7 @@ export default function HomeScreen({ navigation }) {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Ride invite from </Text>
+                <Text style={styles.modalText}>Ride invite </Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={async () => {
