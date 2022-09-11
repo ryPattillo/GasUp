@@ -8,24 +8,53 @@ import {
   StatusBar,
   Card,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../../Input";
 import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
-import { useAuth } from "../../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Avatar, Divider } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function ProfileScreen({ navigation }) {
+  const { currentUser } = useAuth();
+  const [transaction, setTransaction] = useState([
+    { driver: "luis mata", cost: 12.54 },
+    { driver: "Jason Lam", cost: 12.54 },
+    { driver: "Ryan P", cost: 12.54 },
+  ]);
+  useEffect(() => {
+    axios
+      .post("https://gasup-362104.uc.r.appspot.com/api/getTransaction", {
+        userid: currentUser.email,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return () => {};
+  }, []);
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.mainContainer}>
         <View style={styles.topNav}>
           <HStack>
             <TouchableOpacity>
-              <Ionicons name="menu-outline" size={32} style={styles.iconLeft} />
+              <Ionicons
+                name="arrow-back"
+                size={32}
+                style={styles.iconLeft}
+                onPress={() => {
+                  navigation.navigate("Home");
+                }}
+              />
             </TouchableOpacity>
 
             <Text style={styles.logoText}>GasUp</Text>
@@ -36,11 +65,7 @@ export default function ProfileScreen({ navigation }) {
             />
 
             <TouchableOpacity>
-              <Ionicons
-                name="person-circle"
-                size={32}
-                style={styles.iconRight}
-              />
+              <Ionicons size={32} style={styles.iconRight} />
             </TouchableOpacity>
           </HStack>
         </View>
@@ -90,6 +115,15 @@ export default function ProfileScreen({ navigation }) {
           leadingInset={0}
         />
         <Text style={styles.title}>Transaction History</Text>
+        {transaction &&
+          transaction.map((element) => {
+            return (
+              <View>
+                <Text>{element.driver}</Text>
+                <Text>{element.cost}</Text>
+              </View>
+            );
+          })}
       </View>
     </ScrollView>
   );

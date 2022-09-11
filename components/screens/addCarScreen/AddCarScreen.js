@@ -49,9 +49,18 @@ export default function AddCarScreen({ navigation }) {
 
         <Button
           variant="contained"
-          color="#2F6424"
+          color="black"
           style={styles.button}
           title="FINISH"
+        ></Button>
+        <Button
+          variant="contained"
+          color="#2F6424"
+          style={styles.button}
+          title="CANCEL"
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
         ></Button>
       </View>
     </KeyboardAwareScrollView>
