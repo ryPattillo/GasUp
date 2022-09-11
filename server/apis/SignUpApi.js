@@ -11,7 +11,7 @@ module.exports = {
         let last_name = req.body["lastName"];
         // Add the user to the the databse
         admin.firestore().collection("users").doc(`${user_email}`).set({
-          email: user_email,
+          email: user_email.toLowerCase(),
           first: first_name,
           last: last_name,
           friends: [],
