@@ -331,8 +331,8 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    // height: Dimensions.get('window').height,
-    height: 750,
+    height: Dimensions.get("window").height * 0.8,
+    // height: 750,
     borderBottomColor: "#2F6424",
     borderBottomWidth: 10,
   },
