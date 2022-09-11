@@ -166,13 +166,13 @@ export default function HomeScreen({ navigation }) {
   return (
     <Drawer
       type="static"
-      openDrawerOffset={370}
+      openDrawerOffset={367}
       onCloseStart={() => {
         setDrawerBottomOpen(false);
       }}
       styles={{
         drawer: {
-          shadowColor: "white",
+          shadowColor: "#727272",
           shadowOpacity: 0.8,
           shadowRadius: 3,
           backgroundColor: "#727272",
@@ -200,7 +200,17 @@ export default function HomeScreen({ navigation }) {
                     <VStack key={i}>
                       <TouchableOpacity
                         style={styles.friendsButton}
-                        onPress={() => {}}
+                        onPress={() => {
+                          {
+                            axios.post(
+                              "https://gasup-362104.uc.r.appspot.com/api/inviteFriend",
+                              {
+                                friend_email: friend.email,
+                                session: currentUser.email,
+                              }
+                            );
+                          }
+                        }}
                       >
                         <Text style={styles.logoLetter}>
                           {friend.name ? friend.name.charAt(0) : "Error"}
@@ -262,7 +272,7 @@ export default function HomeScreen({ navigation }) {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Ride invite from </Text>
+                <Text style={styles.modalText}>Ride invite </Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={async () => {
@@ -384,27 +394,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     height: "100%",
-    borderBottomColor: "#2F6424",
   },
   Logo: {
-    width: 30,
-    height: 30,
+    width: 35,
+    height: 35,
     flexDirection: "row",
     marginRight: 45,
     float: "left",
-    marginTop: 8,
+    marginTop: 2,
   },
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.8,
     // height: 750,
-    borderBottomColor: "#2F6424",
-    borderBottomWidth: 10,
   },
   topNav: {
-    marginTop: 15,
-    borderBottomWidth: 2,
-    borderBottomColor: "#2F6424",
+    marginTop: 10,
+    // borderBottomWidth: 2,
+    // borderBottomColor: "#2F6424",
+    marginBottom: 15,
   },
   logoText: {
     alignItems: "center",
@@ -480,7 +488,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: "left",
     color: "black",
-    marginTop: 7,
+    marginTop: 3,
     marginLeft: 10,
     // paddingBottom: 5,
   },
@@ -496,7 +504,7 @@ const styles = StyleSheet.create({
     color: "#2F6424",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 400,
+    marginBottom: 350,
     backgroundColor: "#828282",
   },
   drawerUp: {
@@ -539,7 +547,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#828282",
   },
   addIcon: {
-    color: "#2F6424",
+    color: "#78B293",
     width: 30,
     height: 30,
     justifyContent: "center",
