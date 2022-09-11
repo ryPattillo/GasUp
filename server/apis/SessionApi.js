@@ -91,7 +91,7 @@ module.exports = {
             .doc(riders[i])
             .get();
 
-          let transactions = rider["transactions"];
+          let transactions = rider.data()["transactions"];
           transactions.push(session_id);
 
           await admin
