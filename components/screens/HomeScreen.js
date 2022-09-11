@@ -189,26 +189,32 @@ export default function HomeScreen({ navigation }) {
             style={styles.scrollWindow}
           >
             <HStack>
-              <VStack>
-                <TouchableOpacity style={styles.friendsButton}>
-                  <Text style={styles.logoLetter}>L</Text>
-                </TouchableOpacity>
-                <Text style={styles.names}>Luis</Text>
-              </VStack>
-
-              <VStack>
-                <TouchableOpacity style={styles.friendsButton}>
-                  <Text style={styles.logoLetter}>T</Text>
-                </TouchableOpacity>
-                <Text style={styles.names}>Tim</Text>
-              </VStack>
-
-              <VStack>
-                <TouchableOpacity style={styles.friendsButton}>
-                  <Text style={styles.logoLetter}>R</Text>
-                </TouchableOpacity>
-                <Text style={styles.names}>Ryan</Text>
-              </VStack>
+              {friends &&
+                friends.map((friend, i) => {
+                  return (
+                    <VStack key={i}>
+                      <TouchableOpacity
+                        style={styles.friendsButton}
+                        onPress={() => {
+                          {
+                            axios.post(
+                              "https://gasup-362104.uc.r.appspot.com/api/inviteFriend",
+                              {
+                                friend_email: friend.email,
+                                session: currentUser.email,
+                              }
+                            );
+                          }
+                        }}
+                      >
+                        <Text style={styles.logoLetter}>
+                          {friend.name ? friend.name.charAt(0) : "Error"}
+                        </Text>
+                      </TouchableOpacity>
+                      <Text style={styles.names}>{friend.name}</Text>
+                    </VStack>
+                  );
+                })}
 
               <VStack>
                 <TouchableOpacity
@@ -261,7 +267,7 @@ export default function HomeScreen({ navigation }) {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Ride invite from </Text>
+                <Text style={styles.modalText}>Ride invite </Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={async () => {
