@@ -84,7 +84,7 @@ export default function RegistrationScreen({ navigation }) {
           />
         </HStack>
 
-        <Text style={styles.title}>Create a Account</Text>
+        <Text style={styles.title}>Create an Account</Text>
         <Input
           placeholder={"First Name"}
           value={firstname}
