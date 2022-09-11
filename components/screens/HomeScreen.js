@@ -86,7 +86,7 @@ export default function HomeScreen({ navigation }) {
           })
         );
         //Simulate how it will actually work instead use head coded cooordinates
-        if (coordinateList.length % 2 == 0) {
+        if (coordinateList.length % 10 == 0) {
           try {
             console.log(COORDINATES);
             const apiResult = await axios.post(
@@ -267,6 +267,7 @@ export default function HomeScreen({ navigation }) {
                         email: currentUser.email,
                       }
                     );
+                    setInSession(true);
                     setModalVisible(!modalVisible);
                   }}
                 >
