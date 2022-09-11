@@ -59,7 +59,7 @@ export default function AddCarScreen({ navigation }) {
           style={styles.button}
           title="CANCEL"
           onPress={() => {
-            navigation.navigate("Home");
+            navigation.navigate("Profile");
           }}
         ></Button>
       </View>
