@@ -213,7 +213,9 @@ export default function HomeScreen({ navigation }) {
                         }}
                       >
                         <Text style={styles.logoLetter}>
-                          {friend.name ? friend.name.charAt(0) : "Error"}
+                          {friend.name
+                            ? friend.name.toUpperCase().charAt(0)
+                            : "Error"}
                         </Text>
                       </TouchableOpacity>
                       <Text style={styles.names}>{friend.name}</Text>
@@ -250,7 +252,10 @@ export default function HomeScreen({ navigation }) {
           >
             <HStack>
               <VStack>
-                <TouchableOpacity style={styles.friendsButton}>
+                <TouchableOpacity
+                  style={styles.friendsButton}
+                  onPress={getFriends}
+                >
                   <Text style={styles.logoLetter}>J</Text>
                 </TouchableOpacity>
                 <Text style={styles.names}>Jason</Text>
