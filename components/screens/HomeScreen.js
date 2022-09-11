@@ -161,6 +161,11 @@ export default function HomeScreen({ navigation }) {
               <Ionicons
                 name="person-circle"
                 size={32}
+                onPress={() => {
+                  console.log("set");
+
+                  setDrawerRightOpen(drawerRightOpen ? false : true);
+                }}
                 style={styles.iconRight}
               />
             </TouchableOpacity>
