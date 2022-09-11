@@ -83,7 +83,23 @@ export default function HomeScreen({ navigation }) {
     if (!currentUser) {
       navigation.navigate("Login");
     }
+
+    console.log(currentUser.uid);
+    inviteListener.current = firestore
+      .collection("invites")
+      .where(firebase.firestore.FieldPath.documentId(), "==", currentUser.uid)
+      .onSnapshot((docSnapshot) => {
+        docSnapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            console.log("added a doc. SOMEONE INVITED ME ! ");
+          } else {
+            console.log("something else");
+          }
+        });
+      });
+
     return () => {
+      inviteListener.current();
       handleStop();
     };
   }, []);
@@ -144,6 +160,11 @@ export default function HomeScreen({ navigation }) {
               <Ionicons
                 name="person-circle"
                 size={32}
+                onPress={() => {
+                  console.log("set");
+
+                  navigation.navigate("Profile");
+                }}
                 style={styles.iconRight}
               />
             </TouchableOpacity>

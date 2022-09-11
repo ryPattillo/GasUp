@@ -28,16 +28,21 @@ export default function RegistrationScreen({ navigation }) {
   const [lastname, setLastname] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const { signup, logout } = useAuth();
 
   async function registerUser() {
+    setLoading(true);
     try {
       if (firstname === "") {
         Alert.alert("Enter a first name!");
+        return setLoading(false);
       } else if (lastname === "") {
         Alert.alert("Enter a last name!");
+        return setLoading(false);
       } else if (password === "") {
         Alert.alert("Enter a password");
+        return setLoading(false);
       } else {
         const result = await signup(email, password);
         const data = {
@@ -49,10 +54,13 @@ export default function RegistrationScreen({ navigation }) {
           "https://gasup-362104.uc.r.appspot.com/api/signUp",
           data
         );
+        setLoading(false);
         console.log(apiResult);
+        navigation.navigate("Home");
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 
@@ -95,6 +103,7 @@ export default function RegistrationScreen({ navigation }) {
           secureTextEntry={"true"}
         ></Input>
         <Button
+          disabled={loading}
           variant="contained"
           color="#2F6424"
           style={styles.button}
@@ -102,6 +111,7 @@ export default function RegistrationScreen({ navigation }) {
           onPress={registerUser}
         ></Button>
         <Button
+          disabled={loading}
           variant="contained"
           color="#2F6424"
           style={styles.button}

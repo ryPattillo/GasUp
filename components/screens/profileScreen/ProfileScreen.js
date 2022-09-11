@@ -3,14 +3,8 @@ import {
   Text,
   StyleSheet,
   Image,
-  Alert,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   StatusBar,
   Card,
 } from "react-native";
@@ -20,63 +14,84 @@ import { Button } from "@react-native-material/core";
 import { HStack } from "@react-native-material/core";
 import { useAuth } from "../../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Avatar, ListItem } from "@react-native-material/core";
+import { Avatar, Divider } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.topNav}>
-        <HStack>
-          <TouchableOpacity>
-            <Ionicons name="menu-outline" size={32} style={styles.iconLeft} />
-          </TouchableOpacity>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.mainContainer}>
+        <View style={styles.topNav}>
+          <HStack>
+            <TouchableOpacity>
+              <Ionicons name="menu-outline" size={32} style={styles.iconLeft} />
+            </TouchableOpacity>
 
-          <Text style={styles.logoText}>GasUp</Text>
+            <Text style={styles.logoText}>GasUp</Text>
 
-          <Image
-            style={styles.Logo}
-            source={require("../../../assets/images/dragonLogo.png")}
-          />
+            <Image
+              style={styles.Logo}
+              source={require("../../../assets/images/dragonLogo.png")}
+            />
 
-          <TouchableOpacity>
-            <Ionicons name="person-circle" size={32} style={styles.iconRight} />
-          </TouchableOpacity>
-        </HStack>
+            <TouchableOpacity>
+              <Ionicons
+                name="person-circle"
+                size={32}
+                style={styles.iconRight}
+              />
+            </TouchableOpacity>
+          </HStack>
+        </View>
+        <Avatar
+          size={80}
+          style={styles.avatar}
+          icon={(props) => <Icon name="account" {...props} />}
+        />
+        <Text style={styles.usersName}>Firstname Lastname</Text>
+        <Button
+          style={styles.editButton}
+          title="Edit"
+          trailing={(props) => <Icon name="pencil" {...props} />}
+        />
+        <Text style={styles.balance}>$0.00</Text>
+        <Text style={styles.balanceLabel}>Gasup balance</Text>
+        <Divider
+          style={{
+            marginTop: 20,
+            marginBottom: -30,
+            width: 500,
+            borderBottomWidth: 0.5,
+          }}
+          leadingInset={0}
+        />
+        <Image
+          style={styles.carModel}
+          source={require("../../../assets/images/hondaAccord.png")}
+        />
+        <Text style={styles.carInfo}>Car</Text>
+        <Icon
+          name="wrench"
+          size={20}
+          color="#2F6424"
+          style={{ marginRight: -70, marginTop: -22 }}
+          onPress={() => {
+            navigation.navigate("Garage");
+          }}
+        />
+        <Divider
+          style={{
+            marginTop: 20,
+            marginBottom: -30,
+            width: 500,
+            borderBottomWidth: 0.5,
+          }}
+          leadingInset={0}
+        />
+        <Text style={styles.title}>Transaction History</Text>
       </View>
-
-      <Avatar
-        size={80}
-        style={styles.avatar}
-        icon={(props) => <Icon name="account" {...props} />}
-      />
-      <Text style={styles.usersName}>Firstname Lastname</Text>
-
-      <Button
-        style={styles.editButton}
-        title="Edit"
-        trailing={(props) => <Icon name="pencil" {...props} />}
-      />
-
-      <Text style={styles.balance}>$0.00</Text>
-      <Text style={styles.balanceLabel}>Gasup balance</Text>
-
-      <Text style={styles.title}>Transaction History</Text>
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <Text style={styles.text}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </Text>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -96,8 +111,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#2F6424",
   },
   usersName: {
-    fontSize: 18,
-    marginLeft: 50,
+    fontSize: 20,
+    marginLeft: 100,
     marginTop: -65,
   },
   usersEmail: {
@@ -107,9 +122,9 @@ const styles = StyleSheet.create({
   },
   editButton: {
     padding: 0,
-    width: 130,
+    width: 140,
     height: 30,
-    marginLeft: 50,
+    marginLeft: 100,
     marginTop: 5,
     justifyContent: "center",
     backgroundColor: "#2F6424",
@@ -162,21 +177,32 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: -170,
-    marginTop: 30,
+    marginTop: 40,
     marginBottom: 10,
     fontWeight: "bold",
     fontSize: 25,
-    color: "#2F6424",
+    color: "black",
   },
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
   },
   scrollView: {
-    backgroundColor: "pink",
-    marginHorizontal: 20,
+    marginHorizontal: 10,
   },
   text: {
     fontSize: 42,
+  },
+  carModel: {
+    width: 350,
+    height: 350,
+    marginTop: -50,
+  },
+  carInfo: {
+    marginTop: -120,
+    marginBottom: 0,
+    fontWeight: "bold",
+    fontSize: 25,
+    color: "black",
   },
 });
