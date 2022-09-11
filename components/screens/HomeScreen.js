@@ -21,14 +21,26 @@ import Drawer from "react-native-drawer";
 import { useGPS } from "../contexts/LocationContext";
 import axios from "axios";
 
+const COORDINATES = [
+  { lat: -117.17282, long: 32.71204 },
+  { lat: -117.17288, long: 32.71225 },
+  { lat: -117.17293, long: 32.71244 },
+  { lat: -117.17292, long: 32.71256 },
+  { lat: -117.17298, long: 32.712603 },
+  { lat: -117.17314, long: 32.71259 },
+  { lat: -117.17334, long: 32.71254 },
+];
+
 export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
   const { GPSLocation } = useGPS();
-  const [coordinateList, setCoordinateList] = useState([{}]);
+  const [coordinateList, setCoordinateList] = useState(new Array());
 
   const firestore = firebase.firestore();
   const [drawerBottomOpen, setDrawerBottomOpen] = useState(false);
   const [inSession, setInSession] = useState(false);
+  const totalDistance = useRef(0);
+
   const [modalVisible, setModalVisible] = useState(false);
   const observer = useRef(null);
   const inviteListener = useRef(null);
@@ -51,7 +63,7 @@ export default function HomeScreen({ navigation }) {
 
   async function handleGo() {
     try {
-      console.log(GPSLocation);
+      console.log("location", GPSLocation);
       await firestore.collection("sessions").doc(currentUser.email).set({
         driver: currentUser.email,
         coordinates: GPSLocation,
@@ -62,23 +74,27 @@ export default function HomeScreen({ navigation }) {
       setInSession(true);
       clearInterval(timeout.current);
 
-      timeout.current = setInterval(() => {
+      timeout.current = setInterval(async () => {
+        // Add to the coordinates
+        let coordinateListCopy = coordinateList;
         setCoordinateList(
-          coordinateList.push({
+          coordinateListCopy.push({
             lat: GPSLocation["coords"]["latitude"],
             long: GPSLocation["coords"]["longitude"],
           })
         );
-        console.log(coordinateList);
-
-        if (coordinateList.length % 20 == 0) {
+        //Simulate how it will actually work instead use head coded cooordinates
+        if (coordinateList.length % 2 == 0) {
           try {
-            //console.log(coordinates);
-            //   const apiResult = await axios.post(
-            //     "https://gasup-362104.uc.r.appspot.com/api/mapBox",
-            //     coordinates
-            //   );
-            //   console.log(apiResult.data["miles"]);
+            console.log(COORDINATES);
+            const apiResult = await axios.post(
+              "https://gasup-362104.uc.r.appspot.com/api/mapBox",
+              COORDINATES
+            );
+            console.log(apiResult.data["miles"]);
+            totalDistance.current =
+              totalDistance.current + apiResult.data["miles"];
+            console.log("Total ", totalDistance);
           } catch (error) {
             console.log("Error: " + error);
           }
