@@ -6,7 +6,7 @@ module.exports = {
     app.post("/api/signUp", async (req, res, next) => {
       if (req && req.body) {
         // Get the user information to add to the account
-        let user_email = req.body["email"];
+        let user_email = req.body["email"].toLowerCase();
         let first_name = req.body["firstName"];
         let last_name = req.body["lastName"];
         // Add the user to the the databse
