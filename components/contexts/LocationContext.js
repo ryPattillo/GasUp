@@ -30,12 +30,7 @@ export function GPSProvider({ children }) {
     setInterval(async () => {
       let location = await Location.getCurrentPositionAsync({});
       setGPSLocation(location);
-      setCoordinateList(
-        coordinateList.push({
-          lat: location["coords"]["latitude"],
-          long: location["coords"]["longitude"],
-        })
-      );
+    
       if (coordinateList.length % 20 == 0) {
         try {
           //console.log(coordinates);

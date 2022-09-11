@@ -23,6 +23,8 @@ import axios from "axios";
 export default function HomeScreen({ navigation }) {
   const { currentUser } = useAuth();
   const { GPSLocation } = useGPS();
+  const [coordinateList, setCoordinateList] = useState([{}]);
+
   const firestore = firebase.firestore();
   const [drawerBottomOpen, setDrawerBottomOpen] = useState(false);
   const [inSession, setInSession] = useState(false);
@@ -58,8 +60,29 @@ export default function HomeScreen({ navigation }) {
       // Just posted the new doc to the 'searching' collection.
       setInSession(true);
       clearInterval(timeout.current);
+
       timeout.current = setInterval(() => {
-        console.log("interval ran, publish coords.");
+        setCoordinateList(
+          coordinateList.push({
+            lat: GPSLocation["coords"]["latitude"],
+            long: GPSLocation["coords"]["longitude"],
+          })
+        );
+        console.log(coordinateList);
+
+        if (coordinateList.length % 20 == 0) {
+          try {
+            //console.log(coordinates);
+            //   const apiResult = await axios.post(
+            //     "https://gasup-362104.uc.r.appspot.com/api/mapBox",
+            //     coordinates
+            //   );
+            //   console.log(apiResult.data["miles"]);
+          } catch (error) {
+            console.log("Error: " + error);
+          }
+        }
+
         firestore
           .collection("sessions")
           .doc(currentUser.email)
@@ -127,10 +150,11 @@ export default function HomeScreen({ navigation }) {
       content={
         <View style={styles.drawerOpen}>
           <Text style={styles.addText}>Recommended Riders</Text>
-          <ScrollView 
-              persistentScrollbar={true} 
-              horizontal="true" 
-              style={styles.scrollWindow}>
+          <ScrollView
+            persistentScrollbar={true}
+            horizontal="true"
+            style={styles.scrollWindow}
+          >
             <HStack>
               <VStack>
                 <TouchableOpacity style={styles.friendsButton}>
@@ -154,13 +178,14 @@ export default function HomeScreen({ navigation }) {
               </VStack>
 
               <VStack>
-                <TouchableOpacity 
+                <TouchableOpacity
                   onPress={() => {
                     console.log("search");
                     navigation.navigate("Search");
-                  }} 
-                  style={styles.addButton}>
-                  <Ionicons                     
+                  }}
+                  style={styles.addButton}
+                >
+                  <Ionicons
                     name="add-outline"
                     size={32}
                     style={styles.addIcon}
@@ -170,7 +195,7 @@ export default function HomeScreen({ navigation }) {
               </VStack>
             </HStack>
           </ScrollView>
-                    
+
           <View>
             <Text style={styles.addText}>Current Riders</Text>
           </View>
