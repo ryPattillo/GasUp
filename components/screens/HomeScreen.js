@@ -226,6 +226,7 @@ export default function HomeScreen({ navigation }) {
               <VStack>
                 <TouchableOpacity
                   onPress={() => {
+                    setDrawerBottomOpen(false);
                     navigation.navigate("Search");
                   }}
                   style={styles.addButton}
