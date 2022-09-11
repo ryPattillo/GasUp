@@ -61,7 +61,24 @@ module.exports = {
           .get();
         friends_list = friends_list.data()["friends"];
 
-        res.status(200).json(friends_list);
+        let output = [];
+        for (let i = 0; i < friends_list.length; i++) {
+          let friend_doc = await admin
+            .firestore()
+            .collection("users")
+            .doc(`${friends_list[i]}`)
+            .get();
+
+          if (friend_doc && friend_doc.exists) {
+            let data = {
+              name: friend_doc.data().first,
+              email: friends_list[i],
+            };
+            output.push(data);
+          }
+        }
+
+        res.status(200).json(output);
       } else {
         res.status(204).json({ info: "No Request Specified" });
       }

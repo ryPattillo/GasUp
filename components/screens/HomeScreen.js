@@ -26,6 +26,7 @@ export default function HomeScreen({ navigation }) {
   const { GPSLocation } = useGPS();
   const firestore = firebase.firestore();
   const [drawerBottomOpen, setDrawerBottomOpen] = useState(false);
+  const [friends, setFriends] = useState([]);
   const [inSession, setInSession] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const observer = useRef(null);
@@ -88,6 +89,7 @@ export default function HomeScreen({ navigation }) {
       .then((res) => {
         if (res && res.data) {
           console.log(res.data);
+          setFriends(res.data);
         }
       })
       .catch((err) => {
