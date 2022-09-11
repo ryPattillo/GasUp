@@ -10,11 +10,12 @@ module.exports = {
         let first_name = req.body["firstName"];
         let last_name = req.body["lastName"];
         // Add the user to the the databse
-        admin
-          .firestore()
-          .collection("users")
-          .doc(`${user_email}`)
-          .set({ email: user_email, first: first_name, last: last_name });
+        admin.firestore().collection("users").doc(`${user_email}`).set({
+          email: user_email,
+          first: first_name,
+          last: last_name,
+          friends: [],
+        });
         res.status(200).json({ info: `${user_email} created` });
       } else {
         res.status(204).json({ info: "No request body specfied" });
