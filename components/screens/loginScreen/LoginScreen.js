@@ -24,6 +24,7 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const { signup, login } = useAuth();
+  const [loginError, setLoginError] = useState();
 
   async function loginUser() {
     setLoading(true);
@@ -49,7 +50,7 @@ export default function LoginScreen({ navigation }) {
       }
     } catch (error) {
       console.log(error);
-      // Alert.alert(error);
+      setLoginError(error);
       setLoading(false);
     }
   }
@@ -89,6 +90,11 @@ export default function LoginScreen({ navigation }) {
         </HStack>
 
         <Text style={styles.title}>Log in to Gas Up</Text>
+        {loginError && (
+          <Text style={{ color: "red", marginLeft: 15 }}>
+            {JSON.stringify(loginError.message)}
+          </Text>
+        )}
         <Input placeholder={"Email"} value={email} setValue={setEmail}></Input>
         <Input
           placeholder={"Password"}
