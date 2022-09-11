@@ -26,7 +26,12 @@ module.exports = {
           // ensure that the request was sucessful
           if (resp && resp.data) {
             let vehicle_data = resp.data;
-            res.status(200).json(vehicle_data["menuItem"][0]["value"]);
+            res.status(200).json({
+              make: make,
+              year: year,
+              model: model,
+              id: vehicle_data["menuItem"][0]["value"],
+            });
           } else {
             res
               .status(400)
@@ -43,23 +48,43 @@ module.exports = {
     /**
      * Endpoint for getting info about a certain car given an id
      */
-    app.post("/api/carInfo", async (req, res, next) => {
+    app.post("/api/addCar", async (req, res, next) => {
       // Get the car id for the request
       if (req && req.body) {
-        let car_id = req.body["car_id"];
+        let id = req.body["id"];
+        let make = req.body["make"];
+        let year = req.body["year"];
+        let model = req.body["model"];
+        let email = req.body["email"];
+
         try {
           const resp = await axios.get(
-            `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${car_id}`,
+            `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${id}`,
             {
               headers: {
                 accept: "application/json",
               },
             }
           );
+
+          console.log(resp.data);
           // Ensure that respose was retrieved
           if (resp && resp.data) {
-            let vehicle_data = resp.data;
-            res.status(200).json(vehicle_data["avgMpg"]);
+            await admin
+              .firestore()
+              .collection("users")
+              .doc(`${email}`)
+              .set({
+                car_data: {
+                  id: id,
+                  make: make,
+                  year: year,
+                  model: model,
+                  mpg: resp.data["avgMpg"],
+                },
+              });
+
+            res.status(200).json({ info: "Car info updated" });
           } else {
             res
               .status(400)
