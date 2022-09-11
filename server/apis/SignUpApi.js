@@ -23,6 +23,7 @@ module.exports = {
             },
             transactions: [],
             friends: [],
+            balance: 0,
           });
         res.status(200).json({ info: `${user_email} created` });
       } else {

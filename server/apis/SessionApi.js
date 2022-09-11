@@ -47,7 +47,6 @@ module.exports = {
         // Get the running session
         let session_id = req.body["session_id"];
         console.log(session_id);
-
         // Get the driver account for gas mileadge
         let driver_account = await admin
           .firestore()
@@ -55,32 +54,36 @@ module.exports = {
           .doc(session_id)
           .get();
 
-        console.log(driver_account.data());
-
         // get gas miledage
         let mpg = driver_account.data()["car_data"]["avg_mpg"];
+        let driver_transactions = driver_account.data()["transactions"];
+        driver_transactions.push(session_id);
 
+        // Get the current dession data
         var session = await admin
           .firestore()
           .collection("sessions")
           .doc(session_id)
           .get();
 
-        // Get the riders, drivers, and cost for the session
+        // Get the riders, drivers
         let riders = session.data()["riders"];
         let driver = session.data()["driver"];
+        let cost = (req.body["total_miles"] / mpg) * 3.95;
 
         // Create a transaction reciept
-        admin
+        admin.firestore().collection("transactions").doc(session_id).set({
+          driver: driver,
+          riders: riders,
+          // Compute total cost based on mpg, miles , and estimated gas price
+          cost: cost,
+        });
+
+        await admin
           .firestore()
-          .collection("transactions")
+          .collection("users")
           .doc(session_id)
-          .set({
-            driver: driver,
-            riders: riders,
-            // Compute total cost based on mpg, miles , and estimated gas price
-            cost: (req.body["total_miles"] / mpg) * 3.95,
-          });
+          .update({ transactions: driver_transactions });
 
         // Iterate through each rider in the session and add the new transaction to their account
         for (i = 0; i < riders.length; i++) {
@@ -92,13 +95,17 @@ module.exports = {
             .get();
 
           let transactions = rider.data()["transactions"];
+          let balance = rider.data()["balance"];
           transactions.push(session_id);
 
           await admin
             .firestore()
             .collection("users")
             .doc(riders[i])
-            .update({ transactions: transactions });
+            .update({
+              transactions: transactions,
+              balance: balance + cost,
+            });
         }
         res.status(200).json({ info: "working2!" });
       } else {
