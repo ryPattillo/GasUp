@@ -190,9 +190,9 @@ export default function HomeScreen({ navigation }) {
           >
             <HStack>
               {friends &&
-                friends.map((friend) => {
+                friends.map((friend, i) => {
                   return (
-                    <VStack>
+                    <VStack key={i}>
                       <TouchableOpacity
                         style={styles.friendsButton}
                         onPress={() => {}}

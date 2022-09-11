@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { HStack, VStack } from "react-native-flex-layout";
@@ -13,11 +14,13 @@ import Input from "../../Input";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import firebase from "firebase/app";
 import "firebase/auth";
-
+import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
 export default function SearchScreen({ navigation }) {
   const [search, setSearch] = useState("");
   const firestore = firebase.firestore();
   const [results, setResults] = useState([]);
+  const { currentUser } = useAuth();
   // async function searchUser() {
   //     setLoading(true);
   //     try {
@@ -85,10 +88,32 @@ export default function SearchScreen({ navigation }) {
         ></Input>
         <View style={styles.userList}>
           {results &&
-            results.map((e) => {
+            results.map((e, i) => {
               return (
-                <View style={{ height: 40, fontSize: 40 }}>
-                  <Text>{e.email}</Text>
+                <View
+                  key={i}
+                  style={{ marginLeft: 10, marginTop: 5, height: 40 }}
+                >
+                  <TouchableOpacity
+                    onPress={async () => {
+                      console.log("touched.");
+                      axios
+                        .post(
+                          "https://gasup-362104.uc.r.appspot.com/api/addFriend",
+                          {
+                            friend_email: e.email,
+                            user_email: currentUser.email,
+                          }
+                        )
+                        .then((res) => {
+                          if (res && res.data) {
+                            Alert.alert(e.email + " added!");
+                          }
+                        });
+                    }}
+                  >
+                    <Text style={{ fontSize: 20 }}>{e.email}</Text>
+                  </TouchableOpacity>
                 </View>
               );
             })}
