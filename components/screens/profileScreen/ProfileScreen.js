@@ -20,23 +20,16 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function ProfileScreen({ navigation }) {
   const { currentUser } = useAuth();
-  const [transaction, setTransaction] = useState([
-    { driver: "luis mata", cost: 12.54 },
-    { driver: "Jason Lam", cost: 12.54 },
-    { driver: "Ryan P", cost: 12.54 },
-    { driver: "Ryan P", cost: 12.54 },
-    { driver: "Ryan P", cost: 12.54 },
-    { driver: "Ryan P", cost: 12.54 },
-    { driver: "Ryan P", cost: 12.54 },
-  ]);
-  const userName = [];
+  const [transaction, setTransaction] = useState([]);
   useEffect(() => {
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getTransaction", {
-        userid: currentUser.email,
+        email: currentUser.email,
       })
       .then((res) => {
-        userName = console.log(res);
+        if (res) {
+          setTransaction(res.data);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -78,7 +71,7 @@ export default function ProfileScreen({ navigation }) {
           style={styles.avatar}
           icon={(props) => <Icon name="account" {...props} />}
         />
-        <Text style={styles.usersName}>Firstname Lastname</Text>
+        <Text style={styles.usersName}>{currentUser.email}</Text>
         <Button
           style={styles.editButton}
           title="Edit"
@@ -169,6 +162,19 @@ const styles = StyleSheet.create({
   },
   topNav: {
     marginTop: 40,
+  },
+  item: {
+    backgroundColor: "lightgrey",
+    borderColor: "black",
+    borderStyle: "solid",
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    width: 350,
+  },
+  itemContent: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
   Logo: {
     width: 30,

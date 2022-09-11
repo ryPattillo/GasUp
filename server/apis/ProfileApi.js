@@ -13,12 +13,12 @@ module.exports = {
         // Keep a list of transactions
         let transactions_list = [];
         // Getting user id dock id
-        let user_id = req.body["userid"];
+        let email = req.body["email"];
         // Get the document in the database for the specified user
         let doc = await admin
           .firestore()
           .collection("users")
-          .doc(`${user_id}`)
+          .doc(`${email}`)
           .get();
         // Get the user transaction list
         let transactions = doc.data()["transactions"];

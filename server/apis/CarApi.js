@@ -67,7 +67,6 @@ module.exports = {
             }
           );
 
-          console.log(resp.data);
           // Ensure that respose was retrieved
           if (resp && resp.data) {
             await admin

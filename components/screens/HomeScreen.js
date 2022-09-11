@@ -3,6 +3,8 @@ import {
   StyleSheet,
   View,
   Text,
+  Modal,
+  Pressable,
   Image,
   Dimensions,
   TouchableOpacity,
@@ -23,6 +25,7 @@ export default function HomeScreen({ navigation }) {
   const firestore = firebase.firestore();
   const [drawerBottomOpen, setDrawerBottomOpen] = useState(false);
   const [inSession, setInSession] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const observer = useRef(null);
   const inviteListener = useRef(null);
   const timeout = useRef(null);
@@ -83,13 +86,14 @@ export default function HomeScreen({ navigation }) {
     if (!currentUser) {
       navigation.navigate("Login");
     }
-    console.log(currentUser.uid);
+    console.log(currentUser.email);
     inviteListener.current = firestore
       .collection("invites")
-      .where(firebase.firestore.FieldPath.documentId(), "==", currentUser.uid)
+      .where(firebase.firestore.FieldPath.documentId(), "==", currentUser.email)
       .onSnapshot((docSnapshot) => {
         docSnapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
+            setModalVisible(true);
             console.log("added a doc. SOMEONE INVITED ME ! ");
           } else {
             console.log("something else");
@@ -102,6 +106,7 @@ export default function HomeScreen({ navigation }) {
       handleStop();
     };
   }, []);
+
   return (
     <Drawer
       type="static"
@@ -150,6 +155,39 @@ export default function HomeScreen({ navigation }) {
       }
     >
       <View style={styles.mainContainer}>
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Hello World!</Text>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => 
+                    
+                    
+                    setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Hide Modal</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.textStyle}>Show Modal</Text>
+          </Pressable>
+        </View>
+
         {/* Top Nav */}
         <View style={styles.topNav}>
           <HStack>
@@ -357,5 +395,46 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignSelf: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
