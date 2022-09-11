@@ -64,62 +64,62 @@ export default function SearchScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    alignItems: "center",
-    backgroundColor: "white",
-    height: "100%",
-    borderBottomColor: "#2F6424",
-  },
-  backIcon: {
-    color: "black",
-    height: 30,
-    width: 30,
-    // marginRight: 1,
-  },
-  topNav: {
-    marginTop: 40,
-    borderBottomWidth: 2,
-    borderBottomColor: "#2F6424",
-  },
-  Logo: {
-    width: 30,
-    height: 30,
-    flexDirection: "row",
-    marginRight: 45,
-    float: "left",
-    marginTop: 8,
-  },
-  logoText: {
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 45,
-    // flexDirection: 'row',
-    color: "#2F6424",
-    fontWeight: "bold",
-    // position: "absolute",
-    marginLeft: 70,
-  },
-  iconRight: {
-    color: "#2F6424",
-    justifyContent: "right",
-    width: 30,
-    height: 30,
-    position: "absolute",
-    marginLeft: 78,
-  },
-  iconLeft: {
-    color: "#2F6424",
-    justifyContent: "left",
-    alignItems: "flex-start",
-    width: 30,
-    height: 30,
-    marginLeft: -50,
-    marginTop: 5,
-  },
-  userList: {
-    backgroundColor: "red",
-  },
-  userBox: {
-    backgroundColor: "green",
-  },
-});
+    mainContainer: {
+        alignItems: "center",
+        backgroundColor: "white",
+        height: "100%",
+        borderBottomColor: "#2F6424",
+    },
+    backIcon: {
+        color: "black",
+        height: 30,
+        width: 30,
+        // marginRight: 1,
+    },
+    topNav: {
+        marginTop: 40,
+        borderBottomWidth: 2,
+        borderBottomColor: "#2F6424",
+    },
+    Logo: {
+        width: 30,
+        height: 30,
+        flexDirection: "row",
+        marginRight: 45,
+        float: "left",
+        marginTop: 8,
+    },
+    logoText: {
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 45,
+        // flexDirection: 'row',
+        color: "#2F6424",
+        fontWeight: "bold",
+        // position: "absolute",
+        marginLeft: 70,
+    },
+    iconRight: {
+        color: "#2F6424",
+        justifyContent: "right",
+        width: 30,
+        height: 30,
+        position: "absolute",
+        marginLeft: 78,
+    },
+    iconLeft: {
+        color: "#2F6424",
+        justifyContent: "left",
+        alignItems: "flex-start",
+        width: 30,
+        height: 30,
+        marginLeft: -50,
+        marginTop: 5,
+    },
+    userList: {
+        backgroundColor: "red",
+    },
+    userBox: {
+        backgroundColor: "green",
+    },
+})

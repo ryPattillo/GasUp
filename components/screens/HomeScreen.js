@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  Overlay,
 } from "react-native";
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -103,6 +104,19 @@ export default function HomeScreen({ navigation }) {
     if (!currentUser) {
       navigation.navigate("Login");
     }
+    axios
+      .post("https://gasup-362104.uc.r.appspot.com/api/getFriends", {
+        email: currentUser.email,
+      })
+      .then((res) => {
+        if (res && res.data) {
+          console.log(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     console.log(currentUser.email);
     inviteListener.current = firestore
       .collection("invites")
@@ -111,7 +125,7 @@ export default function HomeScreen({ navigation }) {
         docSnapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
             setModalVisible(true);
-            console.log(change);
+            console.log(change.type);
             console.log("added a doc. SOMEONE INVITED ME ! ");
           } else {
             console.log("something else");
@@ -180,7 +194,6 @@ export default function HomeScreen({ navigation }) {
               <VStack>
                 <TouchableOpacity
                   onPress={() => {
-                    console.log("search");
                     navigation.navigate("Search");
                   }}
                   style={styles.addButton}
@@ -196,9 +209,24 @@ export default function HomeScreen({ navigation }) {
             </HStack>
           </ScrollView>
 
-          <View>
-            <Text style={styles.addText}>Current Riders</Text>
+          <View style={styles.ridingBox}>
+            <Text style={styles.currText}>Current Riders</Text>
           </View>
+
+          <ScrollView
+            persistentScrollbar={true}
+            horizontal="true"
+            style={styles.scrollWindow}
+          >
+            <HStack>
+              <VStack>
+                <TouchableOpacity style={styles.friendsButton}>
+                  <Text style={styles.logoLetter}>J</Text>
+                </TouchableOpacity>
+                <Text style={styles.names}>Jason</Text>
+              </VStack>
+            </HStack>
+          </ScrollView>
         </View>
       }
     >
@@ -232,26 +260,24 @@ export default function HomeScreen({ navigation }) {
 
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
+                  onPress={async () => {
+                    await firestore
+                      .collection("invites")
+                      .doc(currentUser.email)
+                      .delete();
+
+                    setModalVisible(!modalVisible);
+                  }}
                 >
                   <Text style={styles.textStyle}>Decline Invite</Text>
                 </Pressable>
               </View>
             </View>
           </Modal>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={styles.textStyle}>Show Modal</Text>
-          </Pressable>
         </View>
         {/* Top Nav */}
         <View style={styles.topNav}>
           <HStack>
-            <TouchableOpacity>
-              <Ionicons name="menu-outline" size={32} style={styles.iconLeft} />
-            </TouchableOpacity>
             <Text style={styles.logoText}>GasUp</Text>
             <Image
               style={styles.Logo}
@@ -293,17 +319,18 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.goText}>{inSession ? "STOP" : "GO"}</Text>
           </TouchableOpacity>
         )}
-        <Ionicons
-          onPress={() => {
-            console.log("other opacity.");
-            setDrawerBottomOpen(drawerBottomOpen ? false : true);
-          }}
-          name={
-            drawerBottomOpen ? "chevron-down-outline" : "chevron-up-outline"
-          }
-          size={32}
-          style={styles.drawerUp}
-        />
+        <View style={styles.drawerUp}>
+          <Ionicons
+            onPress={() => {
+              setDrawerBottomOpen(drawerBottomOpen ? false : true);
+            }}
+            name={
+              drawerBottomOpen ? "chevron-down-outline" : "chevron-up-outline"
+            }
+            size={32}
+            style={styles.chevronDown}
+          />
+        </View>
       </View>
     </Drawer>
   );
@@ -327,13 +354,13 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    // height: Dimensions.get('window').height,
-    height: 715,
+    height: Dimensions.get("window").height * 0.8,
+    // height: 750,
     borderBottomColor: "#2F6424",
     borderBottomWidth: 10,
   },
   topNav: {
-    marginTop: 40,
+    marginTop: 15,
     borderBottomWidth: 2,
     borderBottomColor: "#2F6424",
   },
@@ -411,18 +438,33 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: "left",
     color: "black",
-    marginTop: 10,
+    marginTop: 7,
     marginLeft: 10,
     // paddingBottom: 5,
+  },
+  currText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    alignSelf: "left",
+    color: "black",
+    // marginTop: 10,
+    marginLeft: 10,
   },
   drawerOpen: {
     color: "#2F6424",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 400,
+    backgroundColor: "#828282",
   },
   drawerUp: {
     paddingBottom: 15,
+    backgroundColor: "#5F5F5F",
+    width: Dimensions.get("window").width,
+    // justifyContent: "center",
+    // position: "relative",
+    // alignContent: "center",
+    // alignSelf: "center",
   },
   friendsButton: {
     height: 80,
@@ -518,5 +560,22 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  rideInfo: {
+    position: "relative",
+    alignSelf: "left",
+    backgroundColor: "purple",
+  },
+  ridingBox: {
+    width: Dimensions.get("window").width,
+    height: 25,
+    backgroundColor: "#828282",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlignVertical: "center",
+  },
+  chevronDown: {
+    justifyContent: "center",
+    alignSelf: "center",
   },
 });
