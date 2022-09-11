@@ -32,7 +32,6 @@ export default function HomeScreen({ navigation }) {
 
   async function handleStop() {
     try {
-      console.log("handle end");
       clearInterval(timeout.current);
       setInSession(false);
       if (observer.current !== null) {
@@ -46,31 +45,20 @@ export default function HomeScreen({ navigation }) {
   async function handleGo() {
     try {
       console.log(GPSLocation);
-      await firestore.collection("sessions").doc(currentUser.uid).set({
+      await firestore.collection("sessions").doc(currentUser.email).set({
         driver: currentUser.email,
         coordinates: GPSLocation,
+        riders: [],
+        cost: 0,
       });
       // Just posted the new doc to the 'searching' collection.
-      console.log("DOC CREATED");
       setInSession(true);
-      // observer.current = firestore
-      //   .collection("searching")
-      //   .where(firebase.firestore.FieldPath.documentId(), "==", currentUser.uid)
-      //   .onSnapshot((docSnapshot) => {
-      //     docSnapshot.docChanges().forEach((change) => {
-      //       if (change.type === "added") {
-      //         console.log("added a doc");
-      //       } else {
-      //         console.log("something else");
-      //       }
-      //     });
-      //   });
       clearInterval(timeout.current);
       timeout.current = setInterval(() => {
         console.log("interval ran, publish coords.");
         firestore
           .collection("sessions")
-          .doc(currentUser.uid)
+          .doc(currentUser.email)
           .update({ coordinates: GPSLocation })
           .then((res) => console.log(res))
           .catch((err) => {
@@ -96,6 +84,7 @@ export default function HomeScreen({ navigation }) {
         docSnapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
             setModalVisible(true);
+            console.log(change);
             console.log("added a doc. SOMEONE INVITED ME ! ");
           } else {
             console.log("something else");
@@ -194,21 +183,32 @@ export default function HomeScreen({ navigation }) {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
               setModalVisible(!modalVisible);
             }}
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Hello World!</Text>
+                <Text style={styles.modalText}>Ride invite from </Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => 
-                    
-                    
-                    setModalVisible(!modalVisible)}
+                  onPress={() => {
+                    axios.post(
+                      "https://gasup-362104.uc.r.appspot.com/api/handleInvite",
+                      {
+                        email: currentUser.email,
+                      }
+                    );
+                    setModalVisible(!modalVisible);
+                  }}
                 >
-                  <Text style={styles.textStyle}>Hide Modal</Text>
+                  <Text style={styles.textStyle}>Accept Invite</Text>
+                </Pressable>
+
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Decline Invite</Text>
                 </Pressable>
               </View>
             </View>
