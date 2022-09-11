@@ -135,8 +135,6 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.drawerOpen}>
           <Text style={styles.addText}>Recommended Riders</Text>
           <ScrollView 
-              showsHorizontalScrollIndicator={true} 
-              // showsHorizontalScrollIndicator={true}
               persistentScrollbar={true} 
               horizontal="true" 
               style={styles.scrollWindow}>
@@ -148,7 +146,6 @@ export default function HomeScreen({ navigation }) {
                 </TouchableOpacity>
                 <Text style={styles.names}>Luis</Text>
               </VStack>
-
 
               <VStack>
                 <TouchableOpacity style={styles.friendsButton}>
@@ -165,12 +162,13 @@ export default function HomeScreen({ navigation }) {
               </VStack>
 
               <VStack>
-                <TouchableOpacity style={styles.addButton}>
-                  <Ionicons 
-                    onPress={() => {
-                      console.log("search");
-                      navigation.navigate("Search");
-                    }}
+                <TouchableOpacity 
+                  onPress={() => {
+                    console.log("search");
+                    navigation.navigate("Search");
+                  }} 
+                  style={styles.addButton}>
+                  <Ionicons                     
                     name="add-outline"
                     size={32} 
                     style={styles.addIcon} 
@@ -181,7 +179,7 @@ export default function HomeScreen({ navigation }) {
 
             </HStack>
           </ScrollView>
-
+                    
           <View>
             <Text style={styles.addText}>Current Riders</Text>
           </View>
@@ -329,6 +327,7 @@ const styles = StyleSheet.create({
     height: 30,
     position: "absolute",
     marginLeft: 78,
+    marginTop: 5,
   },
   iconLeft: {
     color: "#2F6424",
@@ -337,6 +336,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     marginLeft: -105,
+    marginTop: 5,
   },
   searchButton: {
     color: "#2F6424",
