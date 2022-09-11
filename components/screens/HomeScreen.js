@@ -57,7 +57,7 @@ export default function HomeScreen({ navigation }) {
         console.log("could not clear observer");
       }
       await axios.post("https://gasup-362104.uc.r.appspot.com/api/endDrive", {
-        session_id: currentUser.email,
+        session_id: currentUser ? currentUser.email : "",
         total_miles: totalDistance.current,
       });
     } catch (error) {}
@@ -66,12 +66,15 @@ export default function HomeScreen({ navigation }) {
   async function handleGo() {
     try {
       console.log("location", GPSLocation);
-      await firestore.collection("sessions").doc(currentUser.email).set({
-        driver: currentUser.email,
-        coordinates: GPSLocation,
-        riders: [],
-        cost: 0,
-      });
+      await firestore
+        .collection("sessions")
+        .doc(currentUser ? currentUser.email : "")
+        .set({
+          driver: currentUser ? currentUser.email : "",
+          coordinates: GPSLocation,
+          riders: [],
+          cost: 0,
+        });
       // Just posted the new doc to the 'searching' collection.
       setInSession(true);
       clearInterval(timeout.current);
@@ -104,7 +107,7 @@ export default function HomeScreen({ navigation }) {
 
         firestore
           .collection("sessions")
-          .doc(currentUser.email)
+          .doc(currentUser ? currentUser.email : "")
           .update({ coordinates: GPSLocation })
           .then((res) => console.log(res))
           .catch((err) => {
@@ -121,7 +124,7 @@ export default function HomeScreen({ navigation }) {
     console.log("get friends.");
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getFriends", {
-        email: currentUser.email,
+        email: currentUser ? currentUser.email : "",
       })
       .then((res) => {
         if (res && res.data) {
@@ -141,10 +144,14 @@ export default function HomeScreen({ navigation }) {
     }
     getFriends();
 
-    console.log(currentUser.email);
+    console.log(currentUser ? currentUser.email : "");
     inviteListener.current = firestore
       .collection("invites")
-      .where(firebase.firestore.FieldPath.documentId(), "==", currentUser.email)
+      .where(
+        firebase.firestore.FieldPath.documentId(),
+        "==",
+        currentUser ? currentUser.email : ""
+      )
       .onSnapshot((docSnapshot) => {
         docSnapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
@@ -206,7 +213,7 @@ export default function HomeScreen({ navigation }) {
                               "https://gasup-362104.uc.r.appspot.com/api/inviteFriend",
                               {
                                 friend_email: friend.email,
-                                session: currentUser.email,
+                                session: currentUser ? currentUser.email : "",
                               }
                             );
                           }
@@ -285,7 +292,7 @@ export default function HomeScreen({ navigation }) {
                     const res = await axios.post(
                       "https://gasup-362104.uc.r.appspot.com/api/acceptInvite",
                       {
-                        email: currentUser.email,
+                        email: currentUser ? currentUser.email : "",
                       }
                     );
                     if (res && res.data) {
@@ -320,7 +327,7 @@ export default function HomeScreen({ navigation }) {
                   onPress={async () => {
                     await firestore
                       .collection("invites")
-                      .doc(currentUser.email)
+                      .doc(currentUser ? currentUser.email : "")
                       .delete();
 
                     setModalVisible(!modalVisible);

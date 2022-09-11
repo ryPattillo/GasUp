@@ -29,7 +29,7 @@ export default function ProfileScreen({ navigation }) {
   useEffect(() => {
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getTransaction", {
-        email: currentUser.email,
+        email: currentUser ? currentUser.email : "",
       })
       .then((res) => {
         if (res) {
@@ -46,7 +46,7 @@ export default function ProfileScreen({ navigation }) {
   useEffect(() => {
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getBalance", {
-        email: currentUser.email,
+        email: currentUser ? currentUser.email : "",
       })
       .then((res) => {
         console.log(res.data.balance);
@@ -121,7 +121,11 @@ export default function ProfileScreen({ navigation }) {
           icon={(props) => <Icon name="account" {...props} />}
         />
         <Text style={styles.usersName}>
-          {currentUser ? currentUser.email : "No user loggedin"}
+          {currentUser
+            ? currentUser
+              ? currentUser.email
+              : ""
+            : "No user loggedin"}
         </Text>
         {/* <Button
           style={styles.editButton}
