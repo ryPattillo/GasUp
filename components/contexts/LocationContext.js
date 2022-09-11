@@ -12,7 +12,7 @@ export function useGPS() {
 export function GPSProvider({ children }) {
   const [GPSLocation, setGPSLocation] = useState();
   const [coordinateList, setCoordinateList] = useState([]);
-  const [totalDistance, setTotalDistance] = useState(0);
+  const [totalDistance, setTotalDistance] = useState(0.0);
 
   const coordinates = [
     { lat: -117.17282, long: 32.71204 },
@@ -36,15 +36,15 @@ export function GPSProvider({ children }) {
           long: location["coords"]["longitude"],
         })
       );
-
-      if (coordinateList.length == 5) {
+      if (coordinateList.length % 20 == 0) {
         try {
           console.log(coordinates);
-          const apiResult = await axios.post(
-            "https://gasup-362104.uc.r.appspot.com/api/mapBox",
-            coordinates
-          );
-          console.log(apiResult.data);
+          //   const apiResult = await axios.post(
+          //     "https://gasup-362104.uc.r.appspot.com/api/mapBox",
+          //     coordinates
+          //   );
+
+          //   console.log(apiResult.data["miles"]);
         } catch (error) {
           console.log("Error: " + error);
         }

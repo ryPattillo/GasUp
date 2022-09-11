@@ -21,18 +21,17 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function ProfileScreen({ navigation }) {
   const { currentUser } = useAuth();
-  const [transaction, setTransaction] = useState([
-    { driver: "luis mata", cost: 12.54 },
-    { driver: "Jason Lam", cost: 12.54 },
-    { driver: "Ryan P", cost: 12.54 },
-  ]);
+  const [transaction, setTransaction] = useState([]);
   useEffect(() => {
     axios
       .post("https://gasup-362104.uc.r.appspot.com/api/getTransaction", {
         userid: currentUser.email,
       })
       .then((res) => {
-        console.log(res);
+        if (res) {
+          console.log(res.data);
+          setTransaction(res.data);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -74,7 +73,7 @@ export default function ProfileScreen({ navigation }) {
           style={styles.avatar}
           icon={(props) => <Icon name="account" {...props} />}
         />
-        <Text style={styles.usersName}>Firstname Lastname</Text>
+        <Text style={styles.usersName}>{currentUser.email}</Text>
         <Button
           style={styles.editButton}
           title="Edit"
@@ -118,8 +117,8 @@ export default function ProfileScreen({ navigation }) {
         {transaction &&
           transaction.map((element) => {
             return (
-              <View>
-                <Text>{element.driver}</Text>
+              <View style={styles.transaction}>
+                <Text style={{ alignSelf: "left" }}>{element.driver}</Text>
                 <Text>{element.cost}</Text>
               </View>
             );
@@ -165,6 +164,10 @@ const styles = StyleSheet.create({
   },
   topNav: {
     marginTop: 40,
+  },
+  transaction: {
+    textAlign: "left",
+    paddingBottom: 20,
   },
   Logo: {
     width: 30,
