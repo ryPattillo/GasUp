@@ -27,6 +27,11 @@ export default function App() {
         <GPSProvider>
           <Stack.Navigator>
             <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="Home"
               component={HomeScreen}
               options={{ headerShown: false }}
@@ -35,11 +40,6 @@ export default function App() {
               options={{ headerShown: false }}
               name="Register"
               component={RegistrationScreen}
-            />
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }}
             />
 
             <Stack.Screen
