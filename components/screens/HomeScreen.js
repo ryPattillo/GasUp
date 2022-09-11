@@ -138,24 +138,29 @@ export default function HomeScreen({ navigation }) {
     // Redirects user if not logged in.
     if (!currentUser) {
       navigation.navigate("Login");
-    }
-    getFriends();
+    } else {
+      getFriends();
 
-    console.log(currentUser.email);
-    inviteListener.current = firestore
-      .collection("invites")
-      .where(firebase.firestore.FieldPath.documentId(), "==", currentUser.email)
-      .onSnapshot((docSnapshot) => {
-        docSnapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            setModalVisible(true);
-            console.log(change.type);
-            console.log("added a doc. SOMEONE INVITED ME ! ");
-          } else {
-            console.log("something else");
-          }
+      console.log(currentUser.email);
+      inviteListener.current = firestore
+        .collection("invites")
+        .where(
+          firebase.firestore.FieldPath.documentId(),
+          "==",
+          currentUser.email
+        )
+        .onSnapshot((docSnapshot) => {
+          docSnapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+              setModalVisible(true);
+              console.log(change.type);
+              console.log("added a doc. SOMEONE INVITED ME ! ");
+            } else {
+              console.log("something else");
+            }
+          });
         });
-      });
+    }
 
     return () => {
       inviteListener.current();
